@@ -1,0 +1,14 @@
+services:
+    # Add 2 enviroment variables to the blog LETSENCRYPT_HOST and LETSENCRYPT_EMAIL       
+    ssl-companion:
+        image: 'jrcs/letsencrypt-nginx-proxy-companion'
+        container_name: ssl-companion
+        environment:
+            - 'com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy=true'
+        volumes:
+            - '../data/nginx_data/certs:/etc/nginx/certs:rw' # same path as nginx-proxy container
+            - '/var/run/docker.sock:/var/run/docker.sock:ro'
+        volumes_from:
+            - nginx-proxy
+        depends_on:
+            - nginx-proxy

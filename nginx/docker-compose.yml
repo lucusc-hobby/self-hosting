@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+    nginx:
+        image: 'jwilder/nginx-proxy:latest'
+        container_name: nginx-proxy
+        ports:
+            - '80:80'
+            - '443:443'
+        volumes:
+            - '/var/run/docker.sock:/tmp/docker.sock:ro' 
+            - '../data/nginx:/etc/nginx/vhost.d' # to update vhost configuration
+            - '../data/nginx/html:/usr/share/nginx/html' # to write challenge files
+            - '../data/nginx/certs:/etc/nginx/certs:ro' # this should match the ssl-companion container
+            - '../data/nginx/custom_nginx.conf:/etc/nginx/conf.d/custom_nginx.conf:ro'
+        networks:
+            - proxy-network
+networks: 
+    proxy-network:
+        driver: bridge

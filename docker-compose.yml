@@ -5,9 +5,10 @@ services:
     image: funkypenguin/sabnzbd:latest
     container_name: sabnzdb
     volumes:
-      - ./data/sabnzbd:/config
+      - "sabnzbd_data:/config"
+      - "/etc/localtime:/etc/localtime:ro"
     ports:
-      - 8082:8080
+      - 8080:8080
     env_file: uidgid.env
     environment:
       - EDGE=1
@@ -24,14 +25,14 @@ services:
     image: linuxserver/couchpotato:latest
     container_name: couchpotato
     volumes:
-      - ./data/couchpotato:/config
+      - "couch_data:/config"
+      - "/etc/localtime:/etc/localtime:ro"
     ports:
       - 5050:5050
     env_file: uidgid.env
     environment:
       - DOMAIN_NAME=couchpotato.localhost
-      - EDGE=1
-      - VIRTUAL_HOST=couchpotato.locahost
+      - VIRTUAL_HOST=couchpotato.localhost
       - LETSENCRYPT_HOST=couchpotato.localhost
       - LETSENCRYPT_EMAIL=youremail@localhost
     restart: always
@@ -42,7 +43,7 @@ services:
     image: linuxserver/sonarr
     container_name: sonarr
     volumes:
-      - ./data/sonarr:/config
+      - "sonarr_data:/config"
     ports:
       - 8989:8989
     env_file: uidgid.env
@@ -57,3 +58,8 @@ services:
 networks: 
     nginx_proxy-network:
         external: true
+
+volumes:
+  sonarr_data:
+  couch_data:
+  sabnzbd_data:

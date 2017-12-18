@@ -22,7 +22,7 @@ services:
       - 32414:32414/udp
     env_file: uidgid.env
     environment:
-      - VIRTUAL_HOST=plex.localhost
+      - VIRTUAL_HOST=plex.htpc
       - VIRTUAL_PORT=32400
       - VERSION=latest
       - NETWORK_ACCESS=internal
@@ -40,8 +40,8 @@ services:
       - 8080:8080
     env_file: uidgid.env
     environment:
-      - DOMAIN_NAME=sabnzbd.localhost
-      - VIRTUAL_HOST=sabnzbd.localhost
+      - DOMAIN_NAME=sabnzbd.htpc
+      - VIRTUAL_HOST=sabnzbd.htpc
       - VIRTUAL_PORT=8080
       - NETWORK_ACCESS=internal
       - "/etc/localtime:/etc/localtime:ro"
@@ -60,8 +60,8 @@ services:
       - 7878:7878
     env_file: uidgid.env
     environment:
-      - DOMAIN_NAME=radarr.localhost
-      - VIRTUAL_HOST=radarr.localhost
+      - DOMAIN_NAME=radarr.htpc
+      - VIRTUAL_HOST=radarr.htpc
       - VIRTUAL_PORT=7878
       - NETWORK_ACCESS=internal
       - "/etc/localtime:/etc/localtime:ro"
@@ -83,8 +83,8 @@ services:
       - 8989:8989
     env_file: uidgid.env
     environment:
-      - DOMAIN_NAME=sonarr.localhost
-      - VIRTUAL_HOST=sonarr.localhost      
+      - DOMAIN_NAME=sonarr.htpc
+      - VIRTUAL_HOST=sonarr.htpc      
       - VIRTUAL_PORT=8989
       - NETWORK_ACCESS=internal
       - "/etc/localtime:/etc/localtime:ro"
@@ -102,8 +102,8 @@ services:
       - 5075:5075
     env_file: uidgid.env
     environment:
-      - DOMAIN_NAME=nzbhydra.localhost
-      - VIRTUAL_HOST=nzbhydra.localhost
+      - DOMAIN_NAME=nzbhydra.htpc
+      - VIRTUAL_HOST=nzbhydra.htpc
       - VIRTUAL_PORT=5075
       - NETWORK_ACCESS=internal
       - "/etc/localtime:/etc/localtime:ro"

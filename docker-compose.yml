@@ -25,6 +25,7 @@ services:
       - VIRTUAL_HOST=plex.localhost
       - VIRTUAL_PORT=32400
       - VERSION=latest
+      - NETWORK_ACCESS=internal
       - "/etc/localtime:/etc/localtime:ro"
     networks:
       - nginx_proxy-network
@@ -42,6 +43,7 @@ services:
       - DOMAIN_NAME=sabnzbd.localhost
       - VIRTUAL_HOST=sabnzbd.localhost
       - VIRTUAL_PORT=8080
+      - NETWORK_ACCESS=internal
       - "/etc/localtime:/etc/localtime:ro"
     networks:
       - nginx_proxy-network
@@ -61,6 +63,7 @@ services:
       - DOMAIN_NAME=radarr.localhost
       - VIRTUAL_HOST=radarr.localhost
       - VIRTUAL_PORT=7878
+      - NETWORK_ACCESS=internal
       - "/etc/localtime:/etc/localtime:ro"
     networks:
       - nginx_proxy-network
@@ -83,6 +86,7 @@ services:
       - DOMAIN_NAME=sonarr.localhost
       - VIRTUAL_HOST=sonarr.localhost      
       - VIRTUAL_PORT=8989
+      - NETWORK_ACCESS=internal
       - "/etc/localtime:/etc/localtime:ro"
     networks:
       - nginx_proxy-network
@@ -101,6 +105,7 @@ services:
       - DOMAIN_NAME=nzbhydra.localhost
       - VIRTUAL_HOST=nzbhydra.localhost
       - VIRTUAL_PORT=5075
+      - NETWORK_ACCESS=internal
       - "/etc/localtime:/etc/localtime:ro"
     networks:
       - nginx_proxy-network

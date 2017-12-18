@@ -12,7 +12,7 @@ services:
             - '../data/nginx/vhost.d:/etc/nginx/vhost.d:ro' # to update vhost configuration
             - '../data/nginx/html:/usr/share/nginx/html' # to write challenge files
             - '../data/nginx/certs:/etc/nginx/certs:ro' # this should match the ssl-companion container
-           # - '../data/nginx/custom_nginx.conf:/etc/nginx/conf.d/custom_nginx.conf:ro'
+           # - './network_internal.conf:/etc/nginx/network_internal.conf'
         networks:
             - proxy-network
         restart: unless-stopped

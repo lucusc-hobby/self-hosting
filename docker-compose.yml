@@ -1,65 +1,111 @@
 version: '3'
 
 services:
+  plex:
+    image: linuxserver/plex
+    container_name: plex
+    volumes:
+      - "/media/config/plex:/config"
+      - "/media/tv:/data/tv"
+      - "/media/movies:/data/movies"
+      - "/media/transcode:/transcode"
+    ports:
+      - 32469:32469
+      - 32400:32400
+      - 32401:32401
+      - 3005:3005
+      - 8324:8324
+      - 1900:1900/udp
+      - 32410:32410/udp
+      - 32412:32412/udp
+      - 32413:32413/udp
+      - 32414:32414/udp
+    env_file: uidgid.env
+    environment:
+      - VIRTUAL_HOST=plex.localhost
+      - VIRTUAL_PORT=32400
+      - VERSION=latest
+      - "/etc/localtime:/etc/localtime:ro"
+    networks:
+      - nginx_proxy-network
+    restart: unless-stopped
+
   sabnzbd:
     image: funkypenguin/sabnzbd:latest
     container_name: sabnzdb
     volumes:
-      - "sabnzbd_data:/config"
-      - "/etc/localtime:/etc/localtime:ro"
+      - "/media/config:/config"
     ports:
       - 8080:8080
     env_file: uidgid.env
     environment:
-      - EDGE=1
       - DOMAIN_NAME=sabnzbd.localhost
       - VIRTUAL_HOST=sabnzbd.localhost
-      - LETSENCRYPT_HOST=sabnzbd.localhost
-      - LETSENCRYPT_EMAIL=youremail@localhost
       - VIRTUAL_PORT=8080
-    restart: always
+      - "/etc/localtime:/etc/localtime:ro"
     networks:
       - nginx_proxy-network
+    restart: unless-stopped
 
-  couchpotato:
-    image: linuxserver/couchpotato:latest
-    container_name: couchpotato
+  radarr:
+    image: linuxserver/radarr
+    container_name: radarr
     volumes:
-      - "couch_data:/config"
-      - "/etc/localtime:/etc/localtime:ro"
+      - "/media/config/radarr:/config"
+      - "/media/downloads:/downloads"
+      - "/media/movies:/movies"
     ports:
-      - 5050:5050
+      - 7878:7878
     env_file: uidgid.env
     environment:
-      - DOMAIN_NAME=couchpotato.localhost
-      - VIRTUAL_HOST=couchpotato.localhost
-      - LETSENCRYPT_HOST=couchpotato.localhost
-      - LETSENCRYPT_EMAIL=youremail@localhost
-    restart: always
+      - DOMAIN_NAME=radarr.localhost
+      - VIRTUAL_HOST=radarr.localhost
+      - VIRTUAL_PORT=7878
+      - "/etc/localtime:/etc/localtime:ro"
     networks:
       - nginx_proxy-network
+    restart: unless-stopped
 
   sonarr:
     image: linuxserver/sonarr
     container_name: sonarr
+    depends_on:
+      - sabnzbd
+      - plex
     volumes:
-      - "sonarr_data:/config"
+      - "/media/confic/sonarr:/config"
+      - "/media/downloads:/downloads"
+      - "/media/tv:/tv"
     ports:
       - 8989:8989
     env_file: uidgid.env
     environment:
       - DOMAIN_NAME=sonarr.localhost
-      - VIRTUAL_HOST=sonarr.localhost
-      - LETSENCRYPT_HOST=sonarr.localhost
-      - LETSENCRYPT_EMAIL=youremail@localhost
+      - VIRTUAL_HOST=sonarr.localhost      
+      - VIRTUAL_PORT=8989
+      - "/etc/localtime:/etc/localtime:ro"
     networks:
       - nginx_proxy-network
+    restart: unless-stopped
+
+  nzbhydra:
+    image: linuxserver/hydra
+    container_name: nzbhydra
+    volumes:
+      - "/media/config/nzbhydra:/config"
+      - "/media/downloads:/downloads"
+    ports:
+      - 5075:5075
+    env_file: uidgid.env
+    environment:
+      - DOMAIN_NAME=nzbhydra.localhost
+      - VIRTUAL_HOST=nzbhydra.localhost
+      - VIRTUAL_PORT=5075
+      - "/etc/localtime:/etc/localtime:ro"
+    networks:
+      - nginx_proxy-network
+    restart: unless-stopped
 
 networks: 
     nginx_proxy-network:
         external: true
-
-volumes:
-  sonarr_data:
-  couch_data:
-  sabnzbd_data:

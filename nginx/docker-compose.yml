@@ -15,6 +15,7 @@ services:
            # - '../data/nginx/custom_nginx.conf:/etc/nginx/conf.d/custom_nginx.conf:ro'
         networks:
             - proxy-network
+        restart: unless-stopped
 networks: 
     proxy-network:
         driver: bridge

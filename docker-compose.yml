@@ -32,7 +32,7 @@ services:
     restart: unless-stopped
 
   sabnzbd:
-    image: funkypenguin/sabnzbd:latest
+    image: linuxserver/sabnzbd
     container_name: sabnzdb
     volumes:
       - "/media/config:/config"
@@ -76,7 +76,7 @@ services:
       - sabnzbd
       - plex
     volumes:
-      - "/media/confic/sonarr:/config"
+      - "/media/config/sonarr:/config"
       - "/media/downloads:/downloads"
       - "/media/tv:/tv"
     ports:

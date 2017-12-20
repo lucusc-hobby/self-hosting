@@ -2,33 +2,23 @@ version: '3'
 
 services:
   plex:
-    image: linuxserver/plex
+    image: plexinc/pms-docker
     container_name: plex
     volumes:
       - "/media/config/plex:/config"
       - "/media/tv:/data/tv"
       - "/media/movies:/data/movies"
       - "/media/transcode:/transcode"
-    ports:
-      - 32469:32469
-      - 32400:32400
-      - 32401:32401
-      - 3005:3005
-      - 8324:8324
-      - 1900:1900/udp
-      - 32410:32410/udp
-      - 32412:32412/udp
-      - 32413:32413/udp
-      - 32414:32414/udp
-    env_file: uidgid.env
+    network_mode: host
     environment:
       - VIRTUAL_HOST=plex.htpc
       - VIRTUAL_PORT=32400
       - VERSION=latest
       - NETWORK_ACCESS=internal
+      - PLEX_CLAIM=claim-x9VGt9pFZGUmn9KqAysu
+      - ADVERTISE_IP=http://192.168.10.195:32400/
+      - HOTNAME=PlexServer
       - "/etc/localtime:/etc/localtime:ro"
-    networks:
-      - nginx_proxy-network
     restart: unless-stopped
 
   sabnzbd:

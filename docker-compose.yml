@@ -23,9 +23,9 @@ services:
 
   sabnzbd:
     image: linuxserver/sabnzbd
-    container_name: sabnzdb
+    container_name: sabnzbd
     volumes:
-      - "/media/config/sabnzdb:/config"
+      - "/media/config/sabnzbd:/config"
     ports:
       - 8080:8080
     env_file: uidgid.env

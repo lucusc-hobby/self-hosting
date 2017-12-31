@@ -26,6 +26,8 @@ services:
     container_name: sabnzbd
     volumes:
       - "/media/config/sabnzbd:/config"
+      - '/media/Downloads/complete:/downloads'
+      - '/media/Downloads/incomplete:/incomplete-downloads'
     ports:
       - 8080:8080
     env_file: uidgid.env
@@ -44,7 +46,7 @@ services:
     container_name: radarr
     volumes:
       - "/media/config/radarr:/config"
-      - "/media/downloads:/downloads"
+      - "/media/Downloads/complete:/downloads"
       - "/media/movies:/movies"
     ports:
       - 7878:7878
@@ -67,7 +69,7 @@ services:
       - plex
     volumes:
       - "/media/config/sonarr:/config"
-      - "/media/downloads:/downloads"
+      - "/media/Downloads/complete:/downloads"
       - "/media/tv:/tv"
     ports:
       - 8989:8989
@@ -87,7 +89,7 @@ services:
     container_name: nzbhydra
     volumes:
       - "/media/config/nzbhydra:/config"
-      - "/media/downloads:/downloads"
+      - "/media/Downloads:/downloads"
     ports:
       - 5075:5075
     env_file: uidgid.env

@@ -38,7 +38,7 @@ services:
       - NETWORK_ACCESS=internal
       - "/etc/localtime:/etc/localtime:ro"
     networks:
-      - nginx_proxy-network
+      - nginx_proxy_network
     restart: unless-stopped
 
   radarr:
@@ -58,7 +58,7 @@ services:
       - NETWORK_ACCESS=internal
       - "/etc/localtime:/etc/localtime:ro"
     networks:
-      - nginx_proxy-network
+      - nginx_proxy_network
     restart: unless-stopped
 
   sonarr:
@@ -81,7 +81,7 @@ services:
       - NETWORK_ACCESS=internal
       - "/etc/localtime:/etc/localtime:ro"
     networks:
-      - nginx_proxy-network
+      - nginx_proxy_network
     restart: unless-stopped
 
   nzbhydra:
@@ -100,9 +100,9 @@ services:
       - NETWORK_ACCESS=internal
       - "/etc/localtime:/etc/localtime:ro"
     networks:
-      - nginx_proxy-network
+      - nginx_proxy_network
     restart: unless-stopped
 
 networks: 
-    nginx_proxy-network:
+    nginx_proxy_network:
         external: true

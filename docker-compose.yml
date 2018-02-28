@@ -8,7 +8,7 @@ services:
       - "/media/config/plex:/config"
       - "/media/tv:/data/tv"
       - "/media/movies:/data/movies"
-      - "/media/transcode:/transcode"
+      - "/tmp:/transcode"
     network_mode: host
     environment:
       - VIRTUAL_HOST=plex.htpc

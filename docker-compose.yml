@@ -5,10 +5,10 @@ services:
     image: plexinc/pms-docker
     container_name: plex
     volumes:
-      - "/media/config/plex:/config"
-      - "/media/tv:/data/tv"
-      - "/media/movies:/data/movies"
-      - "/tmp:/transcode"
+      - "${configVolume}/plex:/config"
+      - "${mediaVolume}/tv:/data/tv"
+      - "${mediaVolume}/movies:/data/movies"
+      - "${plexTranscode}:/transcode"
     network_mode: host
     environment:
       - VIRTUAL_HOST=plex.htpc
@@ -25,9 +25,9 @@ services:
     image: linuxserver/sabnzbd
     container_name: sabnzbd
     volumes:
-      - "/media/config/sabnzbd:/config"
-      - '/media/Downloads/complete:/downloads'
-      - '/media/Downloads/incomplete:/incomplete-downloads'
+      - "${configVolume}/sabnzbd:/config"
+      - '${downloadVolume}/complete:/downloads'
+      - '${downloadVolume}/incomplete:/incomplete-downloads'
     ports:
       - 8080:8080
     env_file: uidgid.env
@@ -45,11 +45,9 @@ services:
     image: linuxserver/radarr
     container_name: radarr
     volumes:
-      - "/media/config/radarr:/config"
-      - "/media/Downloads/complete:/downloads"
-      - "/media/movies:/movies"
-    ports:
-      - 7878:7878
+      - "${configVolume}/radarr:/config"
+      - "${downloadVolume}/complete:/downloads"
+      - "${mediaVolume}/movies:/movies"
     env_file: uidgid.env
     environment:
       - DOMAIN_NAME=radarr.htpc
@@ -68,11 +66,9 @@ services:
       - sabnzbd
       - plex
     volumes:
-      - "/media/config/sonarr:/config"
-      - "/media/Downloads/complete:/downloads"
-      - "/media/tv:/tv"
-    ports:
-      - 8989:8989
+      - "${configVolume}/sonarr:/config"
+      - "${downloadVolume}/complete:/downloads"
+      - "${mediaVolume}/tv:/tv"
     env_file: uidgid.env
     environment:
       - DOMAIN_NAME=sonarr.htpc
@@ -88,10 +84,8 @@ services:
     image: linuxserver/hydra
     container_name: nzbhydra
     volumes:
-      - "/media/config/nzbhydra:/config"
-      - "/media/Downloads:/downloads"
-    ports:
-      - 5075:5075
+      - "${configVolume}/nzbhydra:/config"
+      - "${downloadVolume}:/downloads"
     env_file: uidgid.env
     environment:
       - DOMAIN_NAME=nzbhydra.htpc

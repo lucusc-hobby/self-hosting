@@ -11,14 +11,13 @@ services:
       - "${plexTranscode}:/transcode"
     network_mode: host
     environment:
-      - VIRTUAL_HOST=plex.htpc
-      - VIRTUAL_PORT=32400
-      - VERSION=latest
-      - NETWORK_ACCESS=internal
       - PLEX_CLAIM=claim-x9VGt9pFZGUmn9KqAysu
-      - ADVERTISE_IP=http://192.168.10.195:32400/
-      - HOTNAME=PlexServer
+      - ADVERTISE_IP=http://${serverip}:32400/
+      - HOTNAME=antman
       - "/etc/localtime:/etc/localtime:ro"
+    labels:
+      - "traefik.backend=plex"
+      - "traefik.frontend.rule=Host:plex.antman"
     restart: unless-stopped
 
   sabnzbd:
@@ -32,13 +31,12 @@ services:
       - 8080:8080
     env_file: uidgid.env
     environment:
-      - DOMAIN_NAME=sabnzbd.htpc
-      - VIRTUAL_HOST=sabnzbd.htpc
-      - VIRTUAL_PORT=8080
-      - NETWORK_ACCESS=internal
       - "/etc/localtime:/etc/localtime:ro"
+    labels:
+      - "traefik.backend=sabnzbd"
+      - "traefik.frontend.rule=Host:sabnzbd.antman"
     networks:
-      - nginx_proxy_network
+      - web
     restart: unless-stopped
 
   radarr:
@@ -50,13 +48,12 @@ services:
       - "${mediaVolume}/movies:/movies"
     env_file: uidgid.env
     environment:
-      - DOMAIN_NAME=radarr.htpc
-      - VIRTUAL_HOST=radarr.htpc
-      - VIRTUAL_PORT=7878
-      - NETWORK_ACCESS=internal
       - "/etc/localtime:/etc/localtime:ro"
+   labels:
+      - "traefik.backend=radarr"
+      - "traefik.frontend.rule=Host:radarr.antman"
     networks:
-      - nginx_proxy_network
+      - web
     restart: unless-stopped
 
   sonarr:
@@ -71,13 +68,12 @@ services:
       - "${mediaVolume}/tv:/tv"
     env_file: uidgid.env
     environment:
-      - DOMAIN_NAME=sonarr.htpc
-      - VIRTUAL_HOST=sonarr.htpc      
-      - VIRTUAL_PORT=8989
-      - NETWORK_ACCESS=internal
       - "/etc/localtime:/etc/localtime:ro"
+    labels:
+      - "traefik.backend=sonarr"
+      - "traefik.frontend.rule=Host:sonarr.antman"
     networks:
-      - nginx_proxy_network
+      - web
     restart: unless-stopped
 
   nzbhydra:
@@ -88,15 +84,15 @@ services:
       - "${downloadVolume}:/downloads"
     env_file: uidgid.env
     environment:
-      - DOMAIN_NAME=nzbhydra.htpc
-      - VIRTUAL_HOST=nzbhydra.htpc
-      - VIRTUAL_PORT=5075
-      - NETWORK_ACCESS=internal
       - "/etc/localtime:/etc/localtime:ro"
+    labels:
+      - "traefik.backend=nzbhydra"
+      - "traefik.frontend.rule=Host:hydra.antman"
     networks:
-      - nginx_proxy_network
+      - web
     restart: unless-stopped
 
-networks: 
-    nginx_proxy_network:
-        external: true
+networks:
+    web:
+      external:
+        name: traefik_webgateway

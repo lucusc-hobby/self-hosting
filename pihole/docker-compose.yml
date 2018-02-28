@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+    pihole:
+        image: diginc/pi-hole:latest
+        container_name: pihole
+        ports:
+            - '53:53/tcp'
+            - '53:53/udp'
+            - '8053:80/tcp'
+        volumes:
+            - '/var/log/pihole.log:/var/log/pihole.log'
+        networks:
+            - web
+        cap_add:
+            - NET_ADMIN
+        environment:
+            ServerIP: ${serverip}
+            PROXY_LOCATION: pihole
+            VIRTUAL_HOST: pihole.htpc
+            VIRTUAL_PORT: 80
+        extra_hosts:
+            # LAN hostnames for other docker containers using reverse proxy
+            - 'plex plex.antman:${serverip}'
+            - 'radarr radarr.antman:${serverip}'
+            - 'sonarr sonarr.antman:${serverip}'
+            - 'sabnzbd sabnzbd.antman:${serverip}'
+        restart: always
+networks:
+    web:
+      external:
+        name: traefik_webgateway

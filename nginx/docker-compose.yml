@@ -25,7 +25,6 @@ services:
             - '8053:80/tcp'
         volumes:
             - '../data/pihole/:/etc/pihole'
-            - '/var/log/pihole.log:/var/log/pihole.log'
         #network_mode: host
         networks:
             - proxy_network

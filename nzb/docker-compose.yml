@@ -15,9 +15,11 @@ services:
       - ADVERTISE_IP=http://${serverip}:32400/
       - HOTNAME=antman
       - "/etc/localtime:/etc/localtime:ro"
+      - PLEX_UID=${UID}
+      - PLEX_GUID=${GUID}
     labels:
       - "traefik.backend=plex"
-      - "traefik.frontend.rule=Host:plex.antman"
+      - "traefik.frontend.rule=Host:plex.${domainName}"
     restart: unless-stopped
 
   sabnzbd:
@@ -29,12 +31,13 @@ services:
       - '${downloadVolume}/incomplete:/incomplete-downloads'
     ports:
       - 8080:8080
-    env_file: uidgid.env
     environment:
       - "/etc/localtime:/etc/localtime:ro"
+      - PUID:${UID}
+      - PGID:${GUID}
     labels:
       - "traefik.backend=sabnzbd"
-      - "traefik.frontend.rule=Host:sabnzbd.antman"
+      - "traefik.frontend.rule=Host:sabnzbd.${domainName}"
     networks:
       - web
     restart: unless-stopped
@@ -46,12 +49,13 @@ services:
       - "${configVolume}/radarr:/config"
       - "${downloadVolume}/complete:/downloads"
       - "${mediaVolume}/movies:/movies"
-    env_file: uidgid.env
     environment:
       - "/etc/localtime:/etc/localtime:ro"
+      - PUID:${UID}
+      - PGID:${GUID}
    labels:
       - "traefik.backend=radarr"
-      - "traefik.frontend.rule=Host:radarr.antman"
+      - "traefik.frontend.rule=Host:radarr.${domainName}"
     networks:
       - web
     restart: unless-stopped
@@ -66,12 +70,13 @@ services:
       - "${configVolume}/sonarr:/config"
       - "${downloadVolume}/complete:/downloads"
       - "${mediaVolume}/tv:/tv"
-    env_file: uidgid.env
     environment:
       - "/etc/localtime:/etc/localtime:ro"
+      - PUID:${UID}
+      - PGID:${GUID}
     labels:
       - "traefik.backend=sonarr"
-      - "traefik.frontend.rule=Host:sonarr.antman"
+      - "traefik.frontend.rule=Host:sonarr.${domainName}"
     networks:
       - web
     restart: unless-stopped
@@ -82,12 +87,13 @@ services:
     volumes:
       - "${configVolume}/nzbhydra:/config"
       - "${downloadVolume}:/downloads"
-    env_file: uidgid.env
     environment:
       - "/etc/localtime:/etc/localtime:ro"
+      - PUID:${UID}
+      - PGID:${GUID}
     labels:
       - "traefik.backend=nzbhydra"
-      - "traefik.frontend.rule=Host:hydra.antman"
+      - "traefik.frontend.rule=Host:hydra.${domainName}"
     networks:
       - web
     restart: unless-stopped

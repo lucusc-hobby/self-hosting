@@ -2,17 +2,20 @@ version: '3'
 
 services:
     pihole:
-        image: diginc/pi-hole:latest
+        image: pihole/pihole:latest
         container_name: pihole
         dns:
             - 127.0.0.1
             - 1.1.1.1
         ports:
-            - "53:53/tcp"
-            - "53:53/udp"
-            - "67:67/udp"
-            - "80:80/tcp"
-            - "443:443/tcp"
+            - "0.0.0.0:53:53/tcp"
+            - "0.0.0.0:53:53/udp"
+            - "0.0.0.0:67:67/udp"
+            - "0.0.0.0:8053:80/tcp"
+            - "0.0.0.0:4043:443/tcp"
+        labels:
+            - "traefik.backend=pihole"
+            - "traefik.frontend.rule=Host:pihole.${domainName}"
         volumes:
             - '/var/log/pihole.log:/var/log/pihole.log'
         networks:

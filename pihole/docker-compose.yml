@@ -4,37 +4,42 @@ services:
     pihole:
         image: pihole/pihole:latest
         container_name: pihole
-        dns:
-            - 127.0.0.1
-            - 1.1.1.1
+        domainname: ${DOMAINNAME}
         ports:
-            - "0.0.0.0:53:53/tcp"
-            - "0.0.0.0:53:53/udp"
-            - "0.0.0.0:67:67/udp"
-            - "0.0.0.0:8053:80/tcp"
-            - "0.0.0.0:4043:443/tcp"
+            - "53:53/tcp"
+            - "53:53/udp"
+            - "67:67/udp"
+ #           - "443:443"
+            - "8053:80/tcp"
         labels:
+            - "traefik.enable=true"
+            - "traefik.frontend.rule=HostRegexp:pihole.${DOMAINNAME},{catchall:.*}"
+            - "traefik.frontend.priority=1"
             - "traefik.backend=pihole"
-            - "traefik.frontend.rule=Host:pihole.${domainName}"
+            - "traefik.port=80"
+            - "traefik.docker.network=traefik_proxy"
         volumes:
-            - '/var/log/pihole.log:/var/log/pihole.log'
+            - ${PIHOLE_LOG}:/var/log/pihole.log
+            - ${PIHOLE_DNSMASQ}:/etc/dnsmasq.d
         networks:
-            - web
+            - traefik_proxy
         cap_add:
             - NET_ADMIN
         environment:
-            ServerIP: ${serverip}
+            ServerIP: ${SERVERIP}
             PROXY_LOCATION: pihole
-            VIRTUAL_HOST: pihole.${domainName}
-            VIRTUAL_PORT: 80
+            WEBPASSWORD: ${PIHOLE_PASSWORD}
+            TZ: America/Edmonton
+            DNS1: 1.1.1.1
+            DNS2: 1.0.0.1
+            VIRTUAL_HOST: pihole
         extra_hosts:
             # LAN hostnames for other docker containers using reverse proxy
-            - 'plex plex.${domainName}:${serverip}'
-            - 'radarr radarr.${domainName}:${serverip}'
-            - 'sonarr sonarr.${domainName}:${serverip}'
-            - 'sabnzbd sabnzbd.${domainName}:${serverip}'
-        restart: always
+            - 'plex plex.${DOMAINNAME}:${SERVERIP}'
+            - 'radarr radarr.${DOMAINNAME}:${SERVERIP}'
+            - 'sonarr sonarr.${DOMAINNAME}:${SERVERIP}'
+            - 'sabnzbd sabnzbd.${DOMAINNAME}:${SERVERIP}'
+        restart: unless-stopped
 networks:
-    web:
-      external:
-        name: traefik_webgateway
+    traefik_proxy:
+      external: true

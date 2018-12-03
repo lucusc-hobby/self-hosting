@@ -5,59 +5,72 @@ services:
     image: plexinc/pms-docker
     container_name: plex
     volumes:
-      - "${configVolume}/plex:/config"
-      - "${mediaVolume}/tv:/data/tv"
-      - "${mediaVolume}/movies:/data/movies"
-      - "${plexTranscode}:/transcode"
+      - "${CONFIG_VOLUME}/plex:/config"
+      - "${MEDIA_VOLUME}/tv:/data/tv"
+      - "${MEDIA_VOLUME}/movies:/data/movies"
+      - "${PLEX_TRANSCODE}:/transcode"
     network_mode: host
     environment:
       - PLEX_CLAIM=claim-x9VGt9pFZGUmn9KqAysu
-      - ADVERTISE_IP=http://${serverip}:32400/
+      - ADVERTISE_IP=http://${SERVERIP}:32400/
       - HOTNAME=antman
       - "/etc/localtime:/etc/localtime:ro"
       - PLEX_UID=${UID}
-      - PLEX_GUID=${GUID}
+      - PLEX_GUID=${GUID}      
+      - TZ:${TZ}
     labels:
+      - "traefik.enable=true"
       - "traefik.backend=plex"
-      - "traefik.frontend.rule=Host:plex.${domainName}"
+      - "traefik.frontend.rule=Host:plex.${DOMAINNAME}"
+      - "traefik.port=34200"
+      - "traefik.protocol=http"
+      - "traefik.docker.network=traefik_proxy"
     restart: unless-stopped
 
   sabnzbd:
     image: linuxserver/sabnzbd
     container_name: sabnzbd
     volumes:
-      - "${configVolume}/sabnzbd:/config"
-      - '${downloadVolume}/complete:/downloads'
-      - '${downloadVolume}/incomplete:/incomplete-downloads'
+      - "${CONFIG_VOLUME}/sabnzbd:/config"
+      - '${DOWNLOAD_VOLUME}/complete:/downloads'
+      - '${DOWNLOAD_VOLUME}/incomplete:/incomplete-downloads'
     ports:
       - 8081:8080
     environment:
       - "/etc/localtime:/etc/localtime:ro"
       - PUID:${UID}
       - PGID:${GUID}
+      - TZ:${TZ}
     labels:
+      - "traefik.enable=true"
       - "traefik.backend=sabnzbd"
-      - "traefik.frontend.rule=Host:sabnzbd.${domainName}"
+      - "traefik.frontend.rule=Host:sabnzbd.${DOMAINNAME}"
+      - "traefik.port=8080"
+      - "traefik.docker.network=traefik_proxy"
     networks:
-      - web
+      - traefik_proxy
     restart: unless-stopped
 
   radarr:
     image: linuxserver/radarr
     container_name: radarr
     volumes:
-      - "${configVolume}/radarr:/config"
-      - "${downloadVolume}/complete:/downloads"
-      - "${mediaVolume}/movies:/movies"
+      - "${CONFIG_VOLUME}/radarr:/config"
+      - "${DOWNLOAD_VOLUME}/complete:/downloads"
+      - "${MEDIA_VOLUME}/movies:/movies"
     environment:
       - "/etc/localtime:/etc/localtime:ro"
       - PUID:${UID}
       - PGID:${GUID}
+      - TZ:${TZ}
     labels:
+      - "traefik.enable=true"
       - "traefik.backend=radarr"
-      - "traefik.frontend.rule=Host:radarr.${domainName}"
+      - "traefik.frontend.rule=Host:radarr.${DOMAINNAME}"      
+      - "traefik.port=7878"
+      - "traefik.docker.network=traefik_proxy"
     networks:
-      - web
+      - traefik_proxy
     restart: unless-stopped
 
   sonarr:
@@ -67,38 +80,45 @@ services:
       - sabnzbd
       - plex
     volumes:
-      - "${configVolume}/sonarr:/config"
-      - "${downloadVolume}/complete:/downloads"
-      - "${mediaVolume}/tv:/tv"
+      - "${CONFIG_VOLUME}/sonarr:/config"
+      - "${DOWNLOAD_VOLUME}/complete:/downloads"
+      - "${MEDIA_VOLUME}/tv:/tv"
     environment:
       - "/etc/localtime:/etc/localtime:ro"
       - PUID:${UID}
       - PGID:${GUID}
+      - TZ:${TZ}
     labels:
+      - "traefik.enable=true"
       - "traefik.backend=sonarr"
-      - "traefik.frontend.rule=Host:sonarr.${domainName}"
+      - "traefik.frontend.rule=Host:sonarr.${DOMAINNAME}"
+      - "traefik.port=8989"
+      - "traefik.docker.network=traefik_proxy"
     networks:
-      - web
+      - traefik_proxy
     restart: unless-stopped
 
   nzbhydra:
     image: linuxserver/hydra
     container_name: nzbhydra
     volumes:
-      - "${configVolume}/nzbhydra:/config"
-      - "${downloadVolume}:/downloads"
+      - "${CONFIG_VOLUME}/nzbhydra:/config"
+      - "${DOWNLOAD_VOLUME}:/downloads"
     environment:
       - "/etc/localtime:/etc/localtime:ro"
       - PUID:${UID}
       - PGID:${GUID}
+      - TZ:${TZ}
     labels:
+      - "traefik.enable=true"
       - "traefik.backend=nzbhydra"
-      - "traefik.frontend.rule=Host:hydra.${domainName}"
+      - "traefik.frontend.rule=Host:hydra.${DOMAINNAME}"
+      - "traefik.port=5075"
+      - "traefik.docker.network=traefik_proxy"
     networks:
-      - web
+      - traefik_proxy
     restart: unless-stopped
 
 networks:
-    web:
-      external:
-        name: traefik_webgateway
+    traefik_proxy:
+      external: true

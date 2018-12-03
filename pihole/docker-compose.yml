@@ -29,7 +29,7 @@ services:
             ServerIP: ${SERVERIP}
             PROXY_LOCATION: pihole
             WEBPASSWORD: ${PIHOLE_PASSWORD}
-            TZ: America/Edmonton
+            TZ: ${TZ}
             DNS1: 1.1.1.1
             DNS2: 1.0.0.1
             VIRTUAL_HOST: pihole
@@ -39,6 +39,7 @@ services:
             - 'radarr radarr.${DOMAINNAME}:${SERVERIP}'
             - 'sonarr sonarr.${DOMAINNAME}:${SERVERIP}'
             - 'sabnzbd sabnzbd.${DOMAINNAME}:${SERVERIP}'
+            - 'pihole pihole.${DOMAINNAME}:${SERVERIP}'
         restart: unless-stopped
 networks:
     traefik_proxy:

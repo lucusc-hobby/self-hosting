@@ -37,10 +37,9 @@ services:
     ports:
       - 8081:8080
     environment:
-      - "/etc/localtime:/etc/localtime:ro"
-      - PUID:${UID}
-      - PGID:${GUID}
-      - TZ:${TZ}
+      PUID: ${UID}
+      PGID: ${GUID}
+      TZ: ${TZ}
     labels:
       - "traefik.enable=true"
       - "traefik.backend=sabnzbd"
@@ -84,10 +83,9 @@ services:
       - "${DOWNLOAD_VOLUME}/complete:/downloads"
       - "${MEDIA_VOLUME}/tv:/tv"
     environment:
-      - "/etc/localtime:/etc/localtime:ro"
-      - PUID:${UID}
-      - PGID:${GUID}
-      - TZ:${TZ}
+      PUID: ${UID}
+      PGID: ${GUID}
+      TZ: ${TZ}
     labels:
       - "traefik.enable=true"
       - "traefik.backend=sonarr"

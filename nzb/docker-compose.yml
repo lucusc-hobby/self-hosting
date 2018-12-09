@@ -11,13 +11,12 @@ services:
       - "${PLEX_TRANSCODE}:/transcode"
     network_mode: host
     environment:
-      - PLEX_CLAIM=claim-x9VGt9pFZGUmn9KqAysu
-      - ADVERTISE_IP=http://${SERVERIP}:32400/
-      - HOTNAME=antman
-      - "/etc/localtime:/etc/localtime:ro"
-      - PLEX_UID=${UID}
-      - PLEX_GUID=${GUID}      
-      - TZ:${TZ}
+      PLEX_CLAIM: claim-x9VGt9pFZGUmn9KqAysu
+      ADVERTISE_IP: http://${SERVERIP}:32400/
+      HOTNAME: antman
+      PLEX_UID: ${UID}
+      PLEX_GUID: ${GUID}      
+      TZ: ${TZ}
     labels:
       - "traefik.enable=true"
       - "traefik.backend=plex"
@@ -58,10 +57,9 @@ services:
       - "${DOWNLOAD_VOLUME}/complete:/downloads"
       - "${MEDIA_VOLUME}/movies:/movies"
     environment:
-      - "/etc/localtime:/etc/localtime:ro"
-      - PUID:${UID}
-      - PGID:${GUID}
-      - TZ:${TZ}
+      PUID: ${UID}
+      PGID: ${GUID}
+      TZ: ${TZ}
     labels:
       - "traefik.enable=true"
       - "traefik.backend=radarr"
@@ -103,10 +101,9 @@ services:
       - "${CONFIG_VOLUME}/nzbhydra:/config"
       - "${DOWNLOAD_VOLUME}:/downloads"
     environment:
-      - "/etc/localtime:/etc/localtime:ro"
-      - PUID:${UID}
-      - PGID:${GUID}
-      - TZ:${TZ}
+      PUID: ${UID}
+      PGID: ${GUID}
+      TZ: ${TZ}
     labels:
       - "traefik.enable=true"
       - "traefik.backend=nzbhydra"

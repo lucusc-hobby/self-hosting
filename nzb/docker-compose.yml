@@ -11,7 +11,7 @@ services:
       - "${PLEX_TRANSCODE}:/transcode"
     network_mode: host
     environment:
-      PLEX_CLAIM: claim-${plex-claim}
+      PLEX_CLAIM: claim-${PLEX_CLAIM}
       ADVERTISE_IP: http://${SERVERIP}:32400/
       HOTNAME: antman
       PLEX_UID: ${UID}

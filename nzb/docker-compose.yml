@@ -11,7 +11,7 @@ services:
       - "${PLEX_TRANSCODE}:/transcode"
     network_mode: host
     environment:
-      PLEX_CLAIM: claim-x9VGt9pFZGUmn9KqAysu
+      PLEX_CLAIM: claim-${plex-claim}
       ADVERTISE_IP: http://${SERVERIP}:32400/
       HOTNAME: antman
       PLEX_UID: ${UID}
@@ -21,7 +21,7 @@ services:
       - "traefik.enable=true"
       - "traefik.backend=plex"
       - "traefik.frontend.rule=Host:plex.${DOMAINNAME}"
-      - "traefik.port=34200"
+      - "traefik.port=32400"
       - "traefik.protocol=http"
       - "traefik.docker.network=traefik_proxy"
     restart: unless-stopped

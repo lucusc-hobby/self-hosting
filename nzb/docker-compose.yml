@@ -113,6 +113,47 @@ services:
     networks:
       - traefik_proxy
     restart: unless-stopped
+  
+  tautulli:
+    image: linuxserver/tautulli
+    container_name: plexpy
+    volumes: 
+      - ${CONFIG_VOLUME}/tautulli/config:/config
+      - ${CONFIG_VOLUME}/tautulli/logs:/logs:ro
+    environment: 
+      PUID: ${UID}
+      PGID: ${GUID}
+      TZ: ${TZ}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=plexpy"
+      - "traefik.frontend.rule=Host:plexpy.${DOMAINNAME}"
+      - "traefik.port=8081"
+      - "traefik.docker.network=traefik_proxy"
+    networks:
+      - traefik_proxy
+    restart: unless-stopped
+
+  lazylibrarian:
+    image: linuxserver/lazylibrarian
+    container_name: lazylibrarian
+    volumes: 
+      - "${CONFIG_VOLUME}/lazylibrarian/config:/config"
+      - "${DOWNLOAD_VOLUME}:/downloads"
+      - "${MEDIA_VOLUME}/books:/books"
+    environment: 
+      PUID: ${UID}
+      PGID: ${GUID}
+      TZ: ${TZ}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=lazylibrarian"
+      - "traefik.frontend.rule=Host:library.${DOMAINNAME}"
+      - "traefik.port=5299"
+      - "traefik.docker.network=traefik_proxy"
+    networks:
+      - traefik_proxy
+    restart: unless-stopped
 
 networks:
     traefik_proxy:

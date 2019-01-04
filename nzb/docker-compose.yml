@@ -139,7 +139,7 @@ services:
     container_name: lazylibrarian
     volumes: 
       - "${CONFIG_VOLUME}/lazylibrarian/config:/config"
-      - "${DOWNLOAD_VOLUME}:/downloads"
+      - "${DOWNLOAD_VOLUME}/complete:/downloads"
       - "${MEDIA_VOLUME}/books:/books"
     environment: 
       PUID: ${UID}

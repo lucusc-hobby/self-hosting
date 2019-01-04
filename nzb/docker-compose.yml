@@ -148,7 +148,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=lazylibrarian"
-      - "traefik.frontend.rule=Host:library.${DOMAINNAME}"
+      - "traefik.frontend.rule=Host:librarian.${DOMAINNAME}"
       - "traefik.port=5299"
       - "traefik.docker.network=traefik_proxy"
     networks:

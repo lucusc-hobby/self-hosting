@@ -34,6 +34,7 @@ services:
       - "traefik.frontend.headers.frameDeny=true"
     dns:
       - ${SERVERIP}
+    restart: unless-stopped
 
 networks:
   traefik_proxy:

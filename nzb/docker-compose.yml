@@ -100,7 +100,7 @@ services:
     restart: unless-stopped
 
   sonarr:
-    image: linuxserver/sonarr
+    image: linuxserver/sonarr:preview
     container_name: sonarr
     depends_on:
       - sabnzbd
@@ -176,7 +176,6 @@ services:
     networks:
       - traefik_proxy
     restart: unless-stopped
-
 
   hydra:
     image: linuxserver/hydra

@@ -177,23 +177,23 @@ services:
       - traefik_proxy
     restart: unless-stopped
 
-  hydra:
-    image: linuxserver/hydra
-    container_name: hydra
+  hydra2:
+    image: linuxserver/hydra2
+    container_name: hydra2
     volumes:
-      - "${CONFIG_VOLUME}/hydra:/config"
+      - "${CONFIG_VOLUME}/hydra2:/config"
       - "${DOWNLOAD_VOLUME}:/downloads"
     ports:
-      - ${HYDRA_PORT}:5075            
+      - ${HYDRA2_PORT}:5076
     environment:
       PUID: ${UID}
       PGID: ${GUID}
       TZ: ${TZ}
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=hydra"
-      - "traefik.frontend.rule=Host:hydra.${DOMAINNAME}"
-      - "traefik.port=5075"
+      - "traefik.backend=hydra2"
+      - "traefik.frontend.rule=Host:hydra2.${DOMAINNAME}"
+      - "traefik.port=5076"
       - "traefik.docker.network=traefik_proxy"
     networks:
       - traefik_proxy

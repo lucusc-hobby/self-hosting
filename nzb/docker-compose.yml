@@ -78,7 +78,7 @@ services:
     container_name: radarr
     depends_on:
       - sabnzbd
-      - hydra    
+      - hydra2    
     volumes:
       - "${CONFIG_VOLUME}/radarr:/config"
       - "${DOWNLOAD_VOLUME}/complete:/downloads"
@@ -104,7 +104,7 @@ services:
     container_name: sonarr
     depends_on:
       - sabnzbd
-      - hydra
+      - hydra2
     volumes:
       - "${CONFIG_VOLUME}/sonarr:/config"
       - "${DOWNLOAD_VOLUME}/complete:/downloads"
@@ -130,7 +130,7 @@ services:
     container_name: lidarr
     depends_on:
       - sabnzbd
-      - hydra
+      - hydra2
     volumes:
       - "${CONFIG_VOLUME}/lidarr:/config"
       - "${DOWNLOAD_VOLUME}/complete:/downloads"
@@ -156,7 +156,7 @@ services:
     container_name: lazylibrarian
     depends_on:
       - sabnzbd
-      - hydra    
+      - hydra2   
     volumes: 
       - "${CONFIG_VOLUME}/lazylibrarian/config:/config"
       - "${DOWNLOAD_VOLUME}/complete:/downloads"
@@ -173,6 +173,24 @@ services:
       - "traefik.frontend.rule=Host:librarian.${DOMAINNAME}"
       - "traefik.port=5299"
       - "traefik.docker.network=traefik_proxy"
+    networks:
+      - traefik_proxy
+    restart: unless-stopped
+
+  rutorrent:
+    image: linuxserver/rutorrent
+    container_name: rutorrent
+    volumes:
+      - "${CONFIG_VOLUME}/rtorrent:/config"
+      - "${DOWNLOAD_VOLUME}:/downloads"
+    ports:
+      - ${RUTORRENT_PORT}:80
+      - 5000:5000
+      - 51413:51413
+      - 6881:6881/udp
+    environment:
+      PUID: ${UID}
+      PGID: ${GUID}
     networks:
       - traefik_proxy
     restart: unless-stopped
@@ -195,10 +213,37 @@ services:
       - "traefik.frontend.rule=Host:hydra2.${DOMAINNAME}"
       - "traefik.port=5076"
       - "traefik.docker.network=traefik_proxy"
+    environment:
+      PUID: ${UID}
+      PGID: ${GUID}
+      TZ: ${TZ}
     networks:
       - traefik_proxy
     restart: unless-stopped
-  
+
+  jackett:
+    image: linuxserver/jackett
+    container_name: jackett
+    volumes:
+      - "${CONFIG_VOLUME}/jackett:/config"
+      - "${DOWNLOAD_VOLUME}:/downloads"
+    ports:
+      - ${JACKETT_PORT}:9117
+    environment:
+      PUID: ${UID}
+      PGID: ${GUID}
+      TZ: ${TZ}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=jackett"
+      - "traefik.frontend.rule=Host:jackett.${DOMAINNAME}"
+      - "traefik.port=9117"
+      - "traefik.docker.network=traefik_proxy"
+    networks:
+      - traefik_proxy
+    restart: unless-stopped  
+
+
   tautulli:
     image: linuxserver/tautulli
     container_name: tautulli

@@ -20,7 +20,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=plex"
-      - "traefik.frontend.rule=Host:plex.${DOMAINNAME}"
+      - "traefik.frontend.rule=Host:plex.${DOMAIN}"
       - "traefik.port=32400"
       - "traefik.protocol=http"
       - "traefik.docker.network=traefik_proxy"
@@ -41,7 +41,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=jellyfin"
-      - "traefik.frontend.rule=Host:jellyfin.${DOMAINNAME}"
+      - "traefik.frontend.rule=Host:jellyfin.${DOMAIN}"
       - "traefik.port=8080"
       - "traefik.docker.network=traefik_proxy"
     networks:
@@ -66,7 +66,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=sabnzbd"
-      - "traefik.frontend.rule=Host:sabnzbd.${DOMAINNAME}"
+      - "traefik.frontend.rule=Host:sabnzbd.${DOMAIN}"
       - "traefik.port=8080"
       - "traefik.docker.network=traefik_proxy"
     networks:
@@ -92,7 +92,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=radarr"
-      - "traefik.frontend.rule=Host:radarr.${DOMAINNAME}"      
+      - "traefik.frontend.rule=Host:radarr.${DOMAIN}"      
       - "traefik.port=7878"
       - "traefik.docker.network=traefik_proxy"
     networks:
@@ -118,7 +118,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=sonarr"
-      - "traefik.frontend.rule=Host:sonarr.${DOMAINNAME}"
+      - "traefik.frontend.rule=Host:sonarr.${DOMAIN}"
       - "traefik.port=8989"
       - "traefik.docker.network=traefik_proxy"
     networks:
@@ -144,7 +144,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=lidarr"
-      - "traefik.frontend.rule=Host:lidarr.${DOMAINNAME}"
+      - "traefik.frontend.rule=Host:lidarr.${DOMAIN}"
       - "traefik.port=8989"
       - "traefik.docker.network=traefik_proxy"
     networks:
@@ -170,7 +170,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=lazylibrarian"
-      - "traefik.frontend.rule=Host:librarian.${DOMAINNAME}"
+      - "traefik.frontend.rule=Host:librarian.${DOMAIN}"
       - "traefik.port=5299"
       - "traefik.docker.network=traefik_proxy"
     networks:
@@ -210,7 +210,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=hydra2"
-      - "traefik.frontend.rule=Host:hydra2.${DOMAINNAME}"
+      - "traefik.frontend.rule=Host:hydra2.${DOMAIN}"
       - "traefik.port=5076"
       - "traefik.docker.network=traefik_proxy"
     environment:
@@ -236,7 +236,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=jackett"
-      - "traefik.frontend.rule=Host:jackett.${DOMAINNAME}"
+      - "traefik.frontend.rule=Host:jackett.${DOMAIN}"
       - "traefik.port=9117"
       - "traefik.docker.network=traefik_proxy"
     networks:
@@ -261,7 +261,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=tautulli"
-      - "traefik.frontend.rule=Host:tautulli.${DOMAINNAME}"
+      - "traefik.frontend.rule=Host:tautulli.${DOMAIN}"
       - "traefik.port=8181"
       - "traefik.docker.network=traefik_proxy"
     networks:

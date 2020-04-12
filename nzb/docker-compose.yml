@@ -18,12 +18,10 @@ services:
       PLEX_GUID: ${GUID}      
       TZ: ${TZ}
     labels:
-      - "traefik.enable=true"
-      - "traefik.backend=plex"
-      - "traefik.frontend.rule=Host:plex.${DOMAIN}"
-      - "traefik.port=32400"
-      - "traefik.protocol=http"
-      - "traefik.docker.network=traefik_proxy"
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.plex.rule=Host(`plex.${DOMAIN}`)'
+      - 'traefik.http.services.plex.loadbalancer.server.port=32400'
+      - 'traefik.docker.network=traefik_proxy'
     restart: unless-stopped
 
   jellyfin:
@@ -39,11 +37,10 @@ services:
       PGID: ${GUID}
       TZ: ${TZ}
     labels:
-      - "traefik.enable=true"
-      - "traefik.backend=jellyfin"
-      - "traefik.frontend.rule=Host:jellyfin.${DOMAIN}"
-      - "traefik.port=8080"
-      - "traefik.docker.network=traefik_proxy"
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.jellyfin.rule=Host(`plex.${DOMAIN}`)'
+      - 'traefik.http.services.jellyfin.loadbalancer.server.port=8096'
+      - 'traefik.docker.network=traefik_proxy'
     networks:
       - traefik_proxy
     restart: unless-stopped
@@ -64,11 +61,10 @@ services:
       PGID: ${GUID}
       TZ: ${TZ}
     labels:
-      - "traefik.enable=true"
-      - "traefik.backend=sabnzbd"
-      - "traefik.frontend.rule=Host:sabnzbd.${DOMAIN}"
-      - "traefik.port=8080"
-      - "traefik.docker.network=traefik_proxy"
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.sabnzbd.rule=Host(`sabnzbd.${DOMAIN}`)'
+      - 'traefik.http.services.sabnzbd.loadbalancer.server.port=8080'
+      - 'traefik.docker.network=traefik_proxy'
     networks:
       - traefik_proxy
     restart: unless-stopped
@@ -90,11 +86,10 @@ services:
       PGID: ${GUID}
       TZ: ${TZ}
     labels:
-      - "traefik.enable=true"
-      - "traefik.backend=radarr"
-      - "traefik.frontend.rule=Host:radarr.${DOMAIN}"      
-      - "traefik.port=7878"
-      - "traefik.docker.network=traefik_proxy"
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.radarr.rule=Host(`radarr.${DOMAIN}`)'
+      - 'traefik.http.services.radarr.loadbalancer.server.port=7878'
+      - 'traefik.docker.network=traefik_proxy'
     networks:
       - traefik_proxy
     restart: unless-stopped
@@ -116,11 +111,10 @@ services:
       PGID: ${GUID}
       TZ: ${TZ}
     labels:
-      - "traefik.enable=true"
-      - "traefik.backend=sonarr"
-      - "traefik.frontend.rule=Host:sonarr.${DOMAIN}"
-      - "traefik.port=8989"
-      - "traefik.docker.network=traefik_proxy"
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.sonarr.rule=Host(`sonarr.${DOMAIN}`)'
+      - 'traefik.http.services.sonarr.loadbalancer.server.port=8989'
+      - 'traefik.docker.network=traefik_proxy'
     networks:
       - traefik_proxy
     restart: unless-stopped
@@ -142,11 +136,10 @@ services:
       PGID: ${GUID}
       TZ: ${TZ}
     labels:
-      - "traefik.enable=true"
-      - "traefik.backend=lidarr"
-      - "traefik.frontend.rule=Host:lidarr.${DOMAIN}"
-      - "traefik.port=8989"
-      - "traefik.docker.network=traefik_proxy"
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.lidarr.rule=Host(`lidarr.${DOMAIN}`)'
+      - 'traefik.http.services.lidarr.loadbalancer.server.port=8686'
+      - 'traefik.docker.network=traefik_proxy'
     networks:
       - traefik_proxy
     restart: unless-stopped
@@ -168,11 +161,10 @@ services:
       PGID: ${GUID}
       TZ: ${TZ}
     labels:
-      - "traefik.enable=true"
-      - "traefik.backend=lazylibrarian"
-      - "traefik.frontend.rule=Host:librarian.${DOMAIN}"
-      - "traefik.port=5299"
-      - "traefik.docker.network=traefik_proxy"
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.lazylibrarian.rule=Host(`lazylibrarian.${DOMAIN}`)'
+      - 'traefik.http.services.lazylibrarian.loadbalancer.server.port=5299'
+      - 'traefik.docker.network=traefik_proxy'
     networks:
       - traefik_proxy
     restart: unless-stopped
@@ -208,11 +200,10 @@ services:
       PGID: ${GUID}
       TZ: ${TZ}
     labels:
-      - "traefik.enable=true"
-      - "traefik.backend=hydra2"
-      - "traefik.frontend.rule=Host:hydra2.${DOMAIN}"
-      - "traefik.port=5076"
-      - "traefik.docker.network=traefik_proxy"
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.hydra.rule=Host(`hydra.${DOMAIN}`)'
+      - 'traefik.http.services.hydra.loadbalancer.server.port=5076'
+      - 'traefik.docker.network=traefik_proxy'
     environment:
       PUID: ${UID}
       PGID: ${GUID}
@@ -234,11 +225,10 @@ services:
       PGID: ${GUID}
       TZ: ${TZ}
     labels:
-      - "traefik.enable=true"
-      - "traefik.backend=jackett"
-      - "traefik.frontend.rule=Host:jackett.${DOMAIN}"
-      - "traefik.port=9117"
-      - "traefik.docker.network=traefik_proxy"
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.jackett.rule=Host(`jackett.${DOMAIN}`)'
+      - 'traefik.http.services.jackett.loadbalancer.server.port=9117'
+      - 'traefik.docker.network=traefik_proxy'
     networks:
       - traefik_proxy
     restart: unless-stopped  
@@ -259,11 +249,10 @@ services:
       PGID: ${GUID}
       TZ: ${TZ}
     labels:
-      - "traefik.enable=true"
-      - "traefik.backend=tautulli"
-      - "traefik.frontend.rule=Host:tautulli.${DOMAIN}"
-      - "traefik.port=8181"
-      - "traefik.docker.network=traefik_proxy"
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.tautulli.rule=Host(`tautulli.${DOMAIN}`)'
+      - 'traefik.http.services.tautulli.loadbalancer.server.port=8181'
+      - 'traefik.docker.network=traefik_proxy'
     networks:
       - traefik_proxy
     restart: unless-stopped

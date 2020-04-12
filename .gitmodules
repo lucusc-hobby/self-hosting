@@ -1,0 +1,4 @@
+[submodule "BaseDocker"]
+	path = BaseDocker
+	url = git@github.com:lucusc-hobby/BaseDocker.git
+	branch = master

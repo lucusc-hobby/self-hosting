@@ -70,7 +70,7 @@ services:
     restart: unless-stopped
 
   radarr:
-    image: linuxserver/radarr
+    image: linuxserver/radarr:nightly
     container_name: radarr
     depends_on:
       - sabnzbd

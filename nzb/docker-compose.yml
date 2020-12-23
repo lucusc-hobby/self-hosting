@@ -119,30 +119,30 @@ services:
       - traefik_proxy
     restart: unless-stopped
 
-  lidarr:
-    image: linuxserver/lidarr
-    container_name: lidarr
-    depends_on:
-      - sabnzbd
-      - hydra2
-    volumes:
-      - "${CONFIG_VOLUME}/lidarr:/config"
-      - "${DOWNLOAD_VOLUME}/complete:/downloads"
-      - "${MEDIA_VOLUME}/tv:/tv"
-    ports:
-      - ${LIDARR_PORT}:8686      
-    environment:
-      PUID: ${UID}
-      PGID: ${GUID}
-      TZ: ${TZ}
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.routers.lidarr.rule=Host(`lidarr.${DOMAIN}`)'
-      - 'traefik.http.services.lidarr.loadbalancer.server.port=8686'
-      - 'traefik.docker.network=traefik_proxy'
-    networks:
-      - traefik_proxy
-    restart: unless-stopped
+  # lidarr:
+  #   image: linuxserver/lidarr
+  #   container_name: lidarr
+  #   depends_on:
+  #     - sabnzbd
+  #     - hydra2
+  #   volumes:
+  #     - "${CONFIG_VOLUME}/lidarr:/config"
+  #     - "${DOWNLOAD_VOLUME}/complete:/downloads"
+  #     - "${MEDIA_VOLUME}/tv:/tv"
+  #   ports:
+  #     - ${LIDARR_PORT}:8686      
+  #   environment:
+  #     PUID: ${UID}
+  #     PGID: ${GUID}
+  #     TZ: ${TZ}
+  #   labels:
+  #     - 'traefik.enable=true'
+  #     - 'traefik.http.routers.lidarr.rule=Host(`lidarr.${DOMAIN}`)'
+  #     - 'traefik.http.services.lidarr.loadbalancer.server.port=8686'
+  #     - 'traefik.docker.network=traefik_proxy'
+  #   networks:
+  #     - traefik_proxy
+  #   restart: unless-stopped
 
   lazylibrarian:
     image: linuxserver/lazylibrarian
@@ -217,26 +217,26 @@ services:
       - traefik_proxy
     restart: unless-stopped
 
-  jackett:
-    image: linuxserver/jackett
-    container_name: jackett
-    volumes:
-      - "${CONFIG_VOLUME}/jackett:/config"
-      - "${DOWNLOAD_VOLUME}:/downloads"
-    ports:
-      - ${JACKETT_PORT}:9117
-    environment:
-      PUID: ${UID}
-      PGID: ${GUID}
-      TZ: ${TZ}
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.routers.jackett.rule=Host(`jackett.${DOMAIN}`)'
-      - 'traefik.http.services.jackett.loadbalancer.server.port=9117'
-      - 'traefik.docker.network=traefik_proxy'
-    networks:
-      - traefik_proxy
-    restart: unless-stopped  
+  # jackett:
+  #   image: linuxserver/jackett
+  #   container_name: jackett
+  #   volumes:
+  #     - "${CONFIG_VOLUME}/jackett:/config"
+  #     - "${DOWNLOAD_VOLUME}:/downloads"
+  #   ports:
+  #     - ${JACKETT_PORT}:9117
+  #   environment:
+  #     PUID: ${UID}
+  #     PGID: ${GUID}
+  #     TZ: ${TZ}
+  #   labels:
+  #     - 'traefik.enable=true'
+  #     - 'traefik.http.routers.jackett.rule=Host(`jackett.${DOMAIN}`)'
+  #     - 'traefik.http.services.jackett.loadbalancer.server.port=9117'
+  #     - 'traefik.docker.network=traefik_proxy'
+  #   networks:
+  #     - traefik_proxy
+  #   restart: unless-stopped  
 
 
   tautulli:

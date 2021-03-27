@@ -9,7 +9,7 @@ services:
       - '53:53/tcp'
       - '53:53/udp'
       - '67:67/udp'
-      #           - "443:443"
+      # - "443:443"
       - '8053:80/tcp'
     labels:
       - 'traefik.enable=true'
@@ -21,6 +21,7 @@ services:
     volumes:
       - ${PIHOLE_LOG}:/var/log/pihole.log
       - ${PIHOLE_DNSMASQ}:/etc/dnsmasq.d
+      - ${PIHOLE_ETC}:/etc/pihole
     networks:
       - traefik_proxy
     cap_add:

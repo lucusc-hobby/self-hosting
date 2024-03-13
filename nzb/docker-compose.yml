@@ -209,10 +209,6 @@ services:
       - 'traefik.http.routers.hydra.rule=Host(`hydra.${DOMAIN}`)'
       - 'traefik.http.services.hydra.loadbalancer.server.port=5076'
       - 'traefik.docker.network=traefik_proxy'
-    environment:
-      PUID: ${UID}
-      PGID: ${GUID}
-      TZ: ${TZ}
     networks:
       - traefik_proxy
     restart: unless-stopped

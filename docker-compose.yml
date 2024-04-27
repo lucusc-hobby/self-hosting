@@ -6,6 +6,7 @@ networks:
 include:
   - ./traefik/docker-compose.yaml
   - ./portainer/docker-compose.yaml
+  - ./grafana/docker-compose.yaml
 
 services:
   prometheus:
@@ -33,37 +34,19 @@ services:
       - 'traefik.enable=false'
     restart: unless-stopped
 
-  cadvisor:
-    image: google/cadvisor:latest
-    hostname: cadvisor
-    container_name: cadvisor
-    networks:
-      - traefik_proxy
-    volumes:
-      - '/var/run:/var/run:rw'
-      - '/sys:/sys:ro'
-      - '/var/lib/docker/:/var/lib/docker:ro'
-    labels:
-      - 'traefik.enable=false'
-    restart: unless-stopped
-
-  grafana:
-    image: grafana/grafana
-    hostname: grafana
-    container_name: grafana
-    environment:
-      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-piechart-panel
-    volumes:
-      - grafana_data:/var/lib/grafana
-      - ./grafana/provisioning/:/etc/grafana/provisioning/
-    networks:
-      - traefik_proxy
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN}`)'
-      - 'traefik.http.services.grafana.loadbalancer.server.port=3000'
-      - 'traefik.docker.network=traefik_proxy'
-    restart: unless-stopped
+  # cadvisor:
+  #   image: google/cadvisor:latest
+  #   hostname: cadvisor
+  #   container_name: cadvisor
+  #   networks:
+  #     - traefik_proxy
+  #   volumes:
+  #     - '/var/run:/var/run:rw'
+  #     - '/sys:/sys:ro'
+  #     - '/var/lib/docker/:/var/lib/docker:ro'
+  #   labels:
+  #     - 'traefik.enable=false'
+  #   restart: unless-stopped
 
   watchtower:
       container_name: watchtower

@@ -1,0 +1,67 @@
+api:
+  insecure: true
+  dashboard: true
+  debug: true
+
+entryPoints:
+  http:
+    address: ':80'
+    http:
+      redirections:
+        entryPoint:
+          to: https
+          scheme: https
+  https:
+    address: ':443'
+  traefik:
+    address: ":8080"
+
+middlewares:
+  redirect:
+    redirectScheme:
+      scheme: https
+      permanent: true
+
+
+serverTransport:
+  insecureSkipVerify: true
+
+providers:
+  docker:
+    endpoint: 'unix:///var/run/docker.sock'
+    exposedByDefault: false
+  file:
+    filename: /config.yml
+
+log:
+  filePath: /logs/traefik.log
+
+accessLog:
+  filePath: /logs/access.log
+  bufferingSize: 100
+  filters:
+    statusCodes:
+      - "204-299"
+      - "400-499"
+      - "500-599"
+
+certificatesResolvers:
+  dns-cloudflare:
+    acme:
+      storage: acme.json
+      dnsChallenge:
+        provider: cloudflare
+        resolvers:
+          - "1.1.1.1:53"
+          - "1.0.0.1:53"
+        delayBeforeCheck: 90
+
+metrics:
+  prometheus:
+    addEntryPointsLabels: true
+    addServicesLabels: true
+    buckets:
+      - 0.1
+      - 0.3
+      - 1.2
+      - 5.0

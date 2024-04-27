@@ -1,29 +1,13 @@
-version: '3'
+version: '3.9'
+
+networks:
+  traefik_proxy:
+    external: true
+
+include:
+  - ./traefik/docker-compose.yaml
 
 services:
-  traefik:
-    image: traefik:latest
-    hostname: traefik
-    container_name: traefik
-    command:
-      - '--docker.domain=${DOMAIN}'
-      - '--logLevel=${TRAEFIK_LOG_LEVEL}'
-    networks:
-      - traefik_proxy
-    ports:
-      - '80:80'
-      - '443:443'
-      - '8080:8080'
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./traefik/traefik.yml:/traefik.yml:ro
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN}`)'
-      - 'traefik.http.services.traefik.loadbalancer.server.port=8080'
-      - 'traefik.docker.network=traefik_proxy'
-    restart: unless-stopped
-
   prometheus:
     image: prom/prometheus
     hostname: prometheus
@@ -110,6 +94,5 @@ volumes:
   portainer_data:
     driver: local
 
-networks:
-  traefik_proxy:
-    external: true
+
+

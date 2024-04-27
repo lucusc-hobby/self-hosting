@@ -1,0 +1,44 @@
+
+services:
+  prometheus:
+    image: prom/prometheus
+    hostname: prometheus
+    container_name: prometheus
+    volumes:
+      - './config/prometheus.yml:/etc/prometheus/prometheus.yml'
+    networks:
+      - traefik_proxy
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.prometheus.rule=Host(`prometheus.${DOMAIN}`)'
+      - 'traefik.http.routers.prometheus.entrypoints=https'
+      - 'traefik.http.routers.prometheus.tls.certresolver=dns-cloudflare'
+      - 'traefik.http.routers.prometheus.tls.domains[0].main=${DOMAIN}'
+      - 'traefik.http.routers.prometheus.tls.domains[0].sans=*.${DOMAIN}'
+      - 'traefik.http.services.prometheus.loadbalancer.server.port=9090'
+      - 'traefik.docker.network=traefik_proxy'
+    restart: unless-stopped
+
+  prom_node_exporter:
+    image: prom/node-exporter
+    hostname: prom-node-exporter
+    container_name: prom-node-exporter
+    networks:
+      - traefik_proxy
+    labels:
+      - 'traefik.enable=false'
+    restart: unless-stopped
+
+  # cadvisor:
+  #   image: google/cadvisor:latest
+  #   hostname: cadvisor
+  #   container_name: cadvisor
+  #   networks:
+  #     - traefik_proxy
+  #   volumes:
+  #     - '/var/run:/var/run:rw'
+  #     - '/sys:/sys:ro'
+  #     - '/var/lib/docker/:/var/lib/docker:ro'
+  #   labels:
+  #     - 'traefik.enable=false'
+  #   restart: unless-stopped

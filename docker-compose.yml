@@ -8,46 +8,9 @@ include:
   - ./portainer/docker-compose.yaml
   - ./grafana/docker-compose.yaml
   - ./watchtower/docker-compose.yaml
+  - ./prometheus/docker-compose.yaml
 
-services:
-  prometheus:
-    image: prom/prometheus
-    hostname: prometheus
-    container_name: prometheus
-    volumes:
-      - './prometheus/prometheus.yml:/etc/prometheus/prometheus.yml'
-    networks:
-      - traefik_proxy
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.routers.prometheus.rule=Host(`prometheus.${DOMAIN}`)'
-      - 'traefik.http.services.prometheus.loadbalancer.server.port=9090'
-      - 'traefik.docker.network=traefik_proxy'
-    restart: unless-stopped
 
-  prom_node_exporter:
-    image: prom/node-exporter
-    hostname: prom-node-exporter
-    container_name: prom-node-exporter
-    networks:
-      - traefik_proxy
-    labels:
-      - 'traefik.enable=false'
-    restart: unless-stopped
-
-  # cadvisor:
-  #   image: google/cadvisor:latest
-  #   hostname: cadvisor
-  #   container_name: cadvisor
-  #   networks:
-  #     - traefik_proxy
-  #   volumes:
-  #     - '/var/run:/var/run:rw'
-  #     - '/sys:/sys:ro'
-  #     - '/var/lib/docker/:/var/lib/docker:ro'
-  #   labels:
-  #     - 'traefik.enable=false'
-  #   restart: unless-stopped
 
 
 

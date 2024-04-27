@@ -19,5 +19,6 @@ services:
       - 'traefik.docker.network=traefik_proxy'
     restart: unless-stopped
 
+volumes:
   portainer_data:
     driver: local

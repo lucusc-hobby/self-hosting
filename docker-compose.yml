@@ -55,11 +55,6 @@ services:
       volumes:
         - /var/run/docker.sock:/var/run/docker.sock
       command: --schedule "0 0 23 * * MON" --cleanup
-volumes:
-  grafana_data:
-    driver: local
-  portainer_data:
-    driver: local
 
 
 

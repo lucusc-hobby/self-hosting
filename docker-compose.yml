@@ -7,6 +7,7 @@ include:
   - ./traefik/docker-compose.yaml
   - ./portainer/docker-compose.yaml
   - ./grafana/docker-compose.yaml
+  - ./watchtower/docker-compose.yaml
 
 services:
   prometheus:
@@ -47,14 +48,6 @@ services:
   #   labels:
   #     - 'traefik.enable=false'
   #   restart: unless-stopped
-
-  watchtower:
-      container_name: watchtower
-      restart: always
-      image: containrrr/watchtower
-      volumes:
-        - /var/run/docker.sock:/var/run/docker.sock
-      command: --schedule "0 0 23 * * MON" --cleanup
 
 
 

@@ -9,6 +9,7 @@ include:
   - ./grafana/docker-compose.yaml
   - ./watchtower/docker-compose.yaml
   - ./prometheus/docker-compose.yaml
+  - ./pihole/docker-compose.yaml
   - ./mealie/docker-compose.yaml
 
 

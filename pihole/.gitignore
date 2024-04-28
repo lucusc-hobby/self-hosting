@@ -1,0 +1,5 @@
+config/etc
+
+# Incluide only /config/dnsmasq.d/02-custom.conf exlude all other files in /config/dnsmasq.d/
+config/dnsmasq.d/*
+!config/dnsmasq.d/02-custom.conf

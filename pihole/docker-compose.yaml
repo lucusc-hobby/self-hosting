@@ -1,0 +1,45 @@
+
+services:
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole
+    domainname: ${DOMAIN}
+    ports:
+      - '53:53/tcp'
+      - '53:53/udp'
+      - '67:67/udp'
+      - "9443:443"
+      - '8053:80/tcp'
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.frontend.rule=HostRegexp:pihole.${DOMAIN},{catchall:.*}'
+      - 'traefik.http.routers.pihole.entrypoints=https'
+      - 'traefik.http.routers.pihole.tls.certresolver=dns-cloudflare'
+      - 'traefik.http.routers.pihole.tls.domains[0].main=${DOMAIN}'
+      - 'traefik.http.routers.pihole.tls.domains[0].sans=*.${DOMAIN}'
+      #- 'traefik.frontend.priority=1'
+      #- 'traefik.backend=pihole'
+      - 'traefik.http.services.pihole.loadbalancer.server.port=80'
+      - "traefik.http.routers.pihole.middlewares=pihole-redirectregex,pihole-addprefix"
+      - "traefik.http.middlewares.pihole-addprefix.addprefix.prefix=/admin"
+      - "traefik.http.middlewares.pihole-redirectregex.redirectregex.regex=/admin/$"
+      - "traefik.http.middlewares.pihole-redirectregex.redirectregex.replacement=/"
+      # - 'traefik.port=80'
+      - 'traefik.docker.network=traefik_proxy'
+    volumes:
+      - ${DOCKERDIR}/logs/${HOSTNAME}/pihole:/var/log
+      - ./config/dnsmasq.d:/etc/dnsmasq.d
+      - ./config/etc:/etc/pihole
+    networks:
+      - traefik_proxy
+    cap_add:
+      - NET_ADMIN
+    environment:
+      ServerIP: ${SERVERIP}
+      PROXY_LOCATION: pihole
+      WEBPASSWORD: ${PIHOLE_PASSWORD}
+      TZ: ${TZ}
+      DNS1: 1.1.1.1
+      DNS2: 1.0.0.1
+      VIRTUAL_HOST: pihole
+    restart: unless-stopped

@@ -1,0 +1,71 @@
+
+name: mealie-selfhosting
+services:
+  mealie:
+    image: ghcr.io/mealie-recipes/mealie:v1.5.1 # 
+    container_name: mealie
+    restart: always
+    ports:
+        - "${MEALIE_PORT}:9000" # 
+    networks:
+      - mealie-net
+      - traefik_proxy
+    deploy:
+      resources:
+        limits:
+          memory: 1000M # 
+    volumes:
+      - mealie-data:/app/data/
+    environment:
+      # Set Backend ENV Variables Here
+      # ALLOW_SIGNUP: true
+      PUID: ${UID}
+      PGID: ${GUID}
+      TZ: ${TZ}
+      # MAX_WORKERS: 1
+      # WEB_CONCURRENCY: 1
+      # BASE_URL: https://mealie.${DOMAIN}
+      # Database Settings
+      DB_ENGINE: postgres
+      POSTGRES_USER: mealie
+      POSTGRES_PASSWORD: mealie
+      POSTGRES_SERVER: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: mealie
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.mealie.rule=Host(`mealie.${DOMAIN}`)'
+      - 'traefik.http.routers.mealie.entrypoints=https'
+      - 'traefik.http.routers.mealie.tls.certresolver=dns-cloudflare'
+      - 'traefik.http.routers.mealie.tls.domains[0].main=${DOMAIN}'
+      - 'traefik.http.routers.mealie.tls.domains[0].sans=*.${DOMAIN}'
+      - 'traefik.http.services.mealie.loadbalancer.server.port=9000'
+      - 'traefik.docker.network=traefik_proxy'
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    container_name: mealie_db
+    image: postgres:15
+    restart: always
+    networks:
+      - mealie-net
+    volumes:
+      - mealie-pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: mealie
+      POSTGRES_USER: mealie
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+volumes:
+  mealie-data:
+  mealie-pgdata:
+networks:
+  mealie-net:
+  traefik_proxy:
+    external: true

@@ -15,6 +15,7 @@ include:
   - ./cloudflared/docker-compose.yaml
   # NZB
   - ./nzb/sonarr/docker-compose.yaml
+  - ./nzb/radarr/docker-compose.yaml
   - ./nzb/hydra2/docker-compose.yaml
   - ./nzb/sabnzbd/docker-compose.yaml
 

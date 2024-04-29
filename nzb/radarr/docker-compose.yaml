@@ -1,0 +1,34 @@
+
+services:
+
+  radarr:
+    image: linuxserver/radarr:nightly
+    container_name: radarr
+    depends_on:
+      - sabnzbd
+      - hydra2    
+    volumes:
+      - "${CONFIG_VOLUME}/radarr:/config"
+      - "${DOWNLOAD_VOLUME}/complete:/downloads"
+      - "${MEDIA_VOLUME}/movies:/movies"
+    ports:
+      - ${RADARR_PORT}:7878
+    environment:
+      PUID: ${UID}
+      PGID: ${GUID}
+      TZ: ${TZ}
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.radarr.rule=Host(`radarr.${DOMAIN}`)'
+      - 'traefik.http.routers.radarr.entrypoints=https'
+      - 'traefik.http.routers.radarr.tls.certresolver=dns-cloudflare'
+      - 'traefik.http.routers.radarr.tls.domains[0].main=${DOMAIN}'
+      - 'traefik.http.routers.radarr.tls.domains[0].sans=*.${DOMAIN}'
+      - 'traefik.docker.network=traefik_proxy'
+    networks:
+      - traefik_proxy
+    restart: unless-stopped
+
+networks:
+  traefik_proxy:
+    external: true

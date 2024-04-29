@@ -8,6 +8,7 @@ services:
       - no-new-privileges:true
     networks:
       - traefik_proxy
+      - cloudflare-transport
     ports:
       - '80:80'
       - '443:443'
@@ -39,3 +40,4 @@ services:
 networks:
   traefik_proxy:
     external: true
+  cloudflare-transport:

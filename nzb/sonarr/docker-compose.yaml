@@ -1,0 +1,32 @@
+
+
+services:
+  sonarr:
+    image: linuxserver/sonarr:latest
+    container_name: sonarr
+    volumes:
+      - "${CONFIG_VOLUME}/sonarr:/config"
+      - "${DOWNLOAD_VOLUME}/complete:/downloads"
+      - "${MEDIA_VOLUME}/tv:/tv"
+    ports:
+      - ${SONARR_PORT}:8989
+    environment:
+      PUID: ${UID}
+      PGID: ${GUID}
+      TZ: ${TZ}
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.sonarr.rule=Host(`sonarr.${DOMAIN}`)'
+      - 'traefik.http.routers.sonarr.entrypoints=https'
+      - 'traefik.http.routers.sonarr.tls.certresolver=dns-cloudflare'
+      - 'traefik.http.routers.sonarr.tls.domains[0].main=${DOMAIN}'
+      - 'traefik.http.routers.sonarr.tls.domains[0].sans=*.${DOMAIN}'
+      - 'traefik.http.services.sonarr.loadbalancer.server.port=8989'
+      - 'traefik.docker.network=traefik_proxy'
+    networks:
+      - traefik_proxy
+    restart: unless-stopped
+
+networks:
+  traefik_proxy:
+    external: true

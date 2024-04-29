@@ -2,6 +2,7 @@
 networks:
   traefik_proxy:
     external: true
+  cloudflare-transport:
 
 include:
   - ./traefik/docker-compose.yaml
@@ -11,6 +12,13 @@ include:
   - ./prometheus/docker-compose.yaml
   - ./pihole/docker-compose.yaml
   - ./mealie/docker-compose.yaml
+  - ./cloudflared/docker-compose.yaml
+  # NZB
+  - ./nzb/sonarr/docker-compose.yaml
+  - ./nzb/hydra2/docker-compose.yaml
+  - ./nzb/sabnzbd/docker-compose.yaml
+
+
 
 
 

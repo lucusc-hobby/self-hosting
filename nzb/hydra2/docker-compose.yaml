@@ -1,0 +1,31 @@
+
+services:
+   hydra2:
+    image: linuxserver/nzbhydra2
+    container_name: hydra2
+    volumes:
+      - "${CONFIG_VOLUME}/hydra2:/config"
+      - "${DOWNLOAD_VOLUME}:/downloads"
+    ports:
+      - ${HYDRA2_PORT}:5076
+    environment:
+      PUID: ${UID}
+      PGID: ${GUID}
+      TZ: ${TZ}
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.hydra.rule=Host(`hydra.${DOMAIN}`)'
+      - 'traefik.http.routers.hydra.entrypoints=https'
+      - 'traefik.http.routers.hydra.tls.certresolver=dns-cloudflare'
+      - 'traefik.http.routers.hydra.tls.domains[0].main=${DOMAIN}'
+      - 'traefik.http.routers.hydra.tls.domains[0].sans=*.${DOMAIN}'
+      - 'traefik.http.services.hydra.loadbalancer.server.port=5076'
+      - 'traefik.docker.network=traefik_proxy'
+    networks:
+      - traefik_proxy
+    restart: unless-stopped
+
+
+networks:
+  traefik_proxy:
+    external: true

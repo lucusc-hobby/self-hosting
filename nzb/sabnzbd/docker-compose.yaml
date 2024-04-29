@@ -1,0 +1,34 @@
+
+services:
+
+  sabnzbd:
+    image: linuxserver/sabnzbd
+    container_name: sabnzbd
+    volumes:
+      - "${CONFIG_VOLUME}/sabnzbd:/config"
+      - '${DOWNLOAD_VOLUME}/complete:/downloads'
+      - '${DOWNLOAD_VOLUME}/incomplete:/incomplete-downloads'
+    ports:
+      - ${SABNZBD_PORT}:8080
+      - 9090:9090
+    environment:
+      PUID: ${UID}
+      PGID: ${GUID}
+      TZ: ${TZ}
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.sabnzbd.rule=Host(`sabnzbd.${DOMAIN}`)'
+      - 'traefik.http.routers.sabnzbd.entrypoints=https'
+      - 'traefik.http.routers.sabnzbd.tls.certresolver=dns-cloudflare'
+      - 'traefik.http.routers.sabnzbd.tls.domains[0].main=${DOMAIN}'
+      - 'traefik.http.routers.sabnzbd.tls.domains[0].sans=*.${DOMAIN}'
+      - 'traefik.http.services.sabnzbd.loadbalancer.server.port=8080'
+      - 'traefik.docker.network=traefik_proxy'
+    networks:
+      - traefik_proxy
+    restart: unless-stopped
+
+
+networks:
+  traefik_proxy:
+    external: true

@@ -24,26 +24,7 @@ services:
       - 'traefik.docker.network=traefik_proxy'
     restart: unless-stopped
 
-  jellyfin:
-    image: jellyfin/jellyfin
-    container_name: jellyfin
-    volumes:
-      - "${CONFIG_VOLUME}/jellyfin:/config"
-      - "${MEDIA_VOLUME}/:/media"
-    ports:
-      - ${JELLYFIN_PORT}:8096
-    environment:
-      PUID: ${UID}
-      PGID: ${GUID}
-      TZ: ${TZ}
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.routers.jellyfin.rule=Host(`jellyfin.${DOMAIN}`)'
-      - 'traefik.http.services.jellyfin.loadbalancer.server.port=8096'
-      - 'traefik.docker.network=traefik_proxy'
-    networks:
-      - traefik_proxy
-    restart: unless-stopped
+
 
   
 
@@ -72,30 +53,30 @@ services:
   #     - traefik_proxy
   #   restart: unless-stopped
 
-  lazylibrarian:
-    image: linuxserver/lazylibrarian
-    container_name: lazylibrarian
-    depends_on:
-      - sabnzbd
-      - hydra2   
-    volumes: 
-      - "${CONFIG_VOLUME}/lazylibrarian/config:/config"
-      - "${DOWNLOAD_VOLUME}/complete:/downloads"
-      - "${MEDIA_VOLUME}/books:/books"
-    ports:
-      - ${LAZYLIBRARIAN_PORT}:5299      
-    environment: 
-      PUID: ${UID}
-      PGID: ${GUID}
-      TZ: ${TZ}
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.routers.lazylibrarian.rule=Host(`lazylibrarian.${DOMAIN}`)'
-      - 'traefik.http.services.lazylibrarian.loadbalancer.server.port=5299'
-      - 'traefik.docker.network=traefik_proxy'
-    networks:
-      - traefik_proxy
-    restart: unless-stopped
+  # lazylibrarian:
+  #   image: linuxserver/lazylibrarian
+  #   container_name: lazylibrarian
+  #   depends_on:
+  #     - sabnzbd
+  #     - hydra2   
+  #   volumes: 
+  #     - "${CONFIG_VOLUME}/lazylibrarian/config:/config"
+  #     - "${DOWNLOAD_VOLUME}/complete:/downloads"
+  #     - "${MEDIA_VOLUME}/books:/books"
+  #   ports:
+  #     - ${LAZYLIBRARIAN_PORT}:5299      
+  #   environment: 
+  #     PUID: ${UID}
+  #     PGID: ${GUID}
+  #     TZ: ${TZ}
+  #   labels:
+  #     - 'traefik.enable=true'
+  #     - 'traefik.http.routers.lazylibrarian.rule=Host(`lazylibrarian.${DOMAIN}`)'
+  #     - 'traefik.http.services.lazylibrarian.loadbalancer.server.port=5299'
+  #     - 'traefik.docker.network=traefik_proxy'
+  #   networks:
+  #     - traefik_proxy
+  #   restart: unless-stopped
 
   # rutorrent:
   #   image: linuxserver/rutorrent

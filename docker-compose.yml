@@ -19,6 +19,8 @@ include:
   - ./nzb/hydra2/docker-compose.yaml
   - ./nzb/sabnzbd/docker-compose.yaml
 
+  - ./jellyfin/docker-compose.yaml
+
 
 
 

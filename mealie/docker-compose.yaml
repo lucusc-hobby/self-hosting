@@ -4,7 +4,7 @@ services:
   mealie:
     image: ghcr.io/mealie-recipes/mealie:v1.5.1 # 
     container_name: mealie
-    restart: always
+    restart: unless-stopped
     ports:
         - "${MEALIE_PORT}:9000" # 
     networks:
@@ -24,7 +24,8 @@ services:
       TZ: ${TZ}
       # MAX_WORKERS: 1
       # WEB_CONCURRENCY: 1
-      # BASE_URL: https://mealie.${DOMAIN}
+      BASE_URL: https://mealie.${DOMAIN}
+      DEFAULT_GROUP: crawfords
       # Database Settings
       DB_ENGINE: postgres
       POSTGRES_USER: mealie

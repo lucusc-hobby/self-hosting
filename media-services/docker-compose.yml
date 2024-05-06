@@ -123,27 +123,27 @@ services:
   #     - traefik_proxy
   #   restart: unless-stopped  
 
-  tautulli:
-    image: linuxserver/tautulli
-    container_name: tautulli
-    depends_on:
-      - plex    
-    volumes: 
-      - ${CONFIG_VOLUME}/tautulli/config:/config
-      - ${CONFIG_VOLUME}/tautulli/logs:/logs:ro
-    ports:
-      - ${TAUTULLI_PORT}:8181      
-    environment: 
-      PUID: ${UID}
-      PGID: ${GUID}
-      TZ: ${TZ}
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.routers.tautulli.rule=Host(`tautulli.${DOMAIN}`)'
-      - 'traefik.docker.network=traefik_proxy'
-    networks:
-      - traefik_proxy
-    restart: unless-stopped
+  # tautulli:
+  #   image: linuxserver/tautulli
+  #   container_name: tautulli
+  #   depends_on:
+  #     - plex    
+  #   volumes: 
+  #     - ${CONFIG_VOLUME}/tautulli/config:/config
+  #     - ${CONFIG_VOLUME}/tautulli/logs:/logs:ro
+  #   ports:
+  #     - ${TAUTULLI_PORT}:8181      
+  #   environment: 
+  #     PUID: ${UID}
+  #     PGID: ${GUID}
+  #     TZ: ${TZ}
+  #   labels:
+  #     - 'traefik.enable=true'
+  #     - 'traefik.http.routers.tautulli.rule=Host(`tautulli.${DOMAIN}`)'
+  #     - 'traefik.docker.network=traefik_proxy'
+  #   networks:
+  #     - traefik_proxy
+  #   restart: unless-stopped
 
 #calibre:
 #    image: linuxserver/calibre

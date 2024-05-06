@@ -14,10 +14,10 @@ include:
   - ./mealie/mealie.yaml
   - ./cloudflared/cloudflared.yaml
   # NZB
-  - ./nzb/sonarr/sonarr.yaml
-  - ./nzb/radarr/radarr.yaml
-  - ./nzb/hydra2/hydra.yaml
-  - ./nzb/sabnzbd/sabnzbd.yaml
+  - ./media-services/sonarr/sonarr.yaml
+  - ./media-services/radarr/radarr.yaml
+  - ./media-services/hydra2/hydra.yaml
+  - ./media-services/sabnzbd/sabnzbd.yaml
 
   #- ./jellyfin/docker-compose.yaml
 

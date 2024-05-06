@@ -1,0 +1,28 @@
+
+services:
+  plex:
+    image: plexinc/pms-docker
+    container_name: plex
+    volumes:
+      - "${CONFIG_VOLUME}/plex:/config"
+      - "${MEDIA_VOLUME}/tv:/data/tv"
+      - "${MEDIA_VOLUME}/movies:/data/movies"
+      - "${PLEX_TRANSCODE}:/transcode"
+    network_mode: host
+    environment:
+      PLEX_CLAIM: claim-${PLEX_CLAIM}
+      ADVERTISE_IP: http://${SERVERIP}:32400/
+      HOTNAME: ${HOSTNAME}
+      PLEX_UID: ${UID}
+      PLEX_GUID: ${GUID}      
+      TZ: ${TZ}
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.plex.rule=Host(`plex.${DOMAIN}`)'
+       - 'traefik.http.routers.plex.entrypoints=https'
+      - 'traefik.http.routers.plex.tls.certresolver=dns-cloudflare'
+      - 'traefik.http.routers.plex.tls.domains[0].main=${DOMAIN}'
+      - 'traefik.http.routers.plex.tls.domains[0].sans=*.${DOMAIN}'
+      - 'traefik.http.services.plex.loadbalancer.server.port=32400'
+      - 'traefik.docker.network=traefik_proxy'
+    restart: unless-stopped

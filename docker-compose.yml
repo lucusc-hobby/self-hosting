@@ -10,7 +10,7 @@ include:
   - ./grafana/docker-compose.yaml
   - ./watchtower/docker-compose.yaml
   - ./prometheus/prometheus.yaml
-  - ./pihole/docker-compose.yaml
+  - ./pihole/pihole.yaml
   - ./mealie/docker-compose.yaml
   - ./cloudflared/docker-compose.yaml
   # NZB

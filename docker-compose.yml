@@ -12,7 +12,7 @@ include:
   - ./prometheus/prometheus.yaml
   - ./pihole/pihole.yaml
   - ./mealie/mealie.yaml
-  - ./cloudflared/docker-compose.yaml
+  - ./cloudflared/cloudflared.yaml
   # NZB
   - ./nzb/sonarr/docker-compose.yaml
   - ./nzb/radarr/docker-compose.yaml

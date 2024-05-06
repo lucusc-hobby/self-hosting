@@ -13,6 +13,12 @@ services:
       - '80:80'
       - '443:443'
       - '8080:8080'
+    # healthcheck:
+    #   test: ["CMD", "traefik", "healthcheck", "--ping"]
+    #   interval: 30s
+    #   timeout: 30s
+    #   retries: 5
+    #   start_period: 30s
     environment:
       - TZ=${TZ}
       - CF_API_EMAIL=${CF_API_EMAIL}
@@ -35,6 +41,9 @@ services:
       - 'traefik.http.routers.traefik.tls.domains[0].sans=*.${DOMAIN}'
       - 'traefik.http.services.traefik.loadbalancer.server.port=8080'
       - 'traefik.docker.network=traefik_proxy'
+      # - "traefik.http.routers.pingweb.rule=PathPrefix(`/ping`)"
+      # - "traefik.http.routers.pingweb.service=ping@internal"
+      # - "traefik.http.routers.pingweb.entrypoints=websecure"
     restart: unless-stopped
 
 networks:

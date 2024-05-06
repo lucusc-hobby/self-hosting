@@ -5,7 +5,7 @@ networks:
   cloudflare-transport:
 
 include:
-  - ./traefik/docker-compose.yaml
+  - ./traefik/traefik.yaml
   - ./portainer/docker-compose.yaml
   - ./grafana/docker-compose.yaml
   - ./watchtower/docker-compose.yaml

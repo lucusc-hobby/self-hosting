@@ -11,7 +11,7 @@ include:
   - ./watchtower/docker-compose.yaml
   - ./prometheus/prometheus.yaml
   - ./pihole/pihole.yaml
-  - ./mealie/docker-compose.yaml
+  - ./mealie/mealie.yaml
   - ./cloudflared/docker-compose.yaml
   # NZB
   - ./nzb/sonarr/docker-compose.yaml

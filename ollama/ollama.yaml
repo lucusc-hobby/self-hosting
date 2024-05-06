@@ -1,0 +1,57 @@
+
+# This is a docker-compose file for Ollama, a self-hosted AI model management platform.
+# https://github.com/muka/ollama-docker/blob/main/docker-compose.yaml is an example of a docker-compose file for Ollama with load balancing
+
+
+services:
+  ollama: 
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - 11434:11434
+    volumes:
+      - ./data:/root/.ollama
+    networks:
+      - ollama-net
+    restart:
+      unless-stopped
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    ports:
+      - ${OPEN_WEBUI_PORT}:8080
+    depends_on:
+      - ollama
+    environment:
+      - 'OLLAMA_API_BASE_URL=http://ollama:11434/api'
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    volumes:
+      - open-webui:/app/backend/data
+    networks:
+      - ollama-net
+      - traefik_proxy
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.ai.rule=Host(`ai.${DOMAIN}`)'
+      - 'traefik.http.routers.ai.entrypoints=https'
+      - 'traefik.http.routers.ai.tls.certresolver=dns-cloudflare'
+      - 'traefik.http.routers.ai.tls.domains[0].main=${DOMAIN}'
+      - 'traefik.http.routers.ai.tls.domains[0].sans=*.${DOMAIN}'
+      - 'traefik.http.services.ai.loadbalancer.server.port=8080'
+      - 'traefik.docker.network=traefik_proxy'
+    restart:
+      unless-stopped
+
+
+
+volumes: 
+  ollama:
+  open-webui:
+networks:
+  ollama-net:
+    driver: bridge
+  traefik_proxy:
+    external: true
+  

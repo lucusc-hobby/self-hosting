@@ -8,7 +8,7 @@ include:
   - ./traefik/traefik.yaml
   - ./portainer/portainer.yaml
   - ./grafana/docker-compose.yaml
-  - ./watchtower/docker-compose.yaml
+  - ./watchtower/watchtower.yaml
   - ./prometheus/prometheus.yaml
   - ./pihole/pihole.yaml
   - ./mealie/mealie.yaml

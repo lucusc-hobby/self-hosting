@@ -19,8 +19,10 @@ include:
   - ./nzb/hydra2/hydra.yaml
   - ./nzb/sabnzbd/sabnzbd.yaml
 
-  - ./jellyfin/docker-compose.yaml
+  #- ./jellyfin/docker-compose.yaml
 
+# Experimental
+  - ./ollama/ollama.yaml
 
 
 

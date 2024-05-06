@@ -6,7 +6,7 @@ networks:
 
 include:
   - ./traefik/traefik.yaml
-  - ./portainer/docker-compose.yaml
+  - ./portainer/portainer.yaml
   - ./grafana/docker-compose.yaml
   - ./watchtower/docker-compose.yaml
   - ./prometheus/prometheus.yaml

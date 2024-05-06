@@ -5,23 +5,32 @@ networks:
   cloudflare-transport:
 
 include:
-  - ./traefik/traefik.yaml
-  - ./portainer/portainer.yaml
-  - ./grafana/grafana.yaml
-  - ./watchtower/watchtower.yaml
-  - ./prometheus/prometheus.yaml
-  - ./pihole/pihole.yaml
+# Infrastructure Services
+  - ./infrastructure/watchtower/watchtower.yaml
+  - ./infrastructure/cloudflared/cloudflared.yaml
+
+# Monitoring Services
+  - ./monitoring/grafana/grafana.yaml
+  - ./monitoring/prometheus/prometheus.yaml
+
+# Network Services
+  - ./networking/traefik/traefik.yaml
+  - ./networking/pihole/pihole.yaml
+
+# Management Services
+  - ./management/portainer/portainer.yaml
+
+# Family Services
   - ./mealie/mealie.yaml
-  - ./cloudflared/cloudflared.yaml
-  # NZB
-  - ./media-services/sonarr/sonarr.yaml
-  - ./media-services/radarr/radarr.yaml
-  - ./media-services/hydra2/hydra.yaml
-  - ./media-services/sabnzbd/sabnzbd.yaml
 
-  #- ./jellyfin/docker-compose.yaml
+# Media Services
+  - ./media/sonarr/sonarr.yaml
+  - ./media/radarr/radarr.yaml
+  - ./media/hydra2/hydra.yaml
+  - ./media/sabnzbd/sabnzbd.yaml
+# - ./media/docker-compose.yaml
 
-# Experimental
+# AI
   - ./ollama/ollama.yaml
 
 

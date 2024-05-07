@@ -20,25 +20,46 @@ services:
     restart: unless-stopped
 
   prom_node_exporter:
-    image: prom/node-exporter
+    image: prom/node-exporter:latest
     hostname: prom-node-exporter
     container_name: prom-node-exporter
     networks:
       - traefik_proxy
+    command:
+      - --path.procfs=/host/proc
+      - --path.sysfs=/host/sys
+      - --path.rootfs=/host
+      - --collector.filesystem.ignored-mount-points
+      - ^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+      - /:/host:ro,rslave
     labels:
       - 'traefik.enable=false'
     restart: unless-stopped
 
-  # cadvisor:
-  #   image: google/cadvisor:latest
-  #   hostname: cadvisor
-  #   container_name: cadvisor
-  #   networks:
-  #     - traefik_proxy
-  #   volumes:
-  #     - '/var/run:/var/run:rw'
-  #     - '/sys:/sys:ro'
-  #     - '/var/lib/docker/:/var/lib/docker:ro'
-  #   labels:
-  #     - 'traefik.enable=false'
-  #   restart: unless-stopped
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    hostname: cadvisor
+    container_name: cadvisor
+    privileged: true
+    networks:
+      - traefik_proxy
+    command:
+      - '-housekeeping_interval=15s'
+      - '-docker_only=true'
+      - '-store_container_labels=false'
+    devices:
+      - /dev/kmsg
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+      - /etc/machine-id:/etc/machine-id:ro
+    labels:
+      - 'traefik.enable=false'
+    restart: unless-stopped

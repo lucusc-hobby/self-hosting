@@ -42,4 +42,6 @@ services:
       DNS1: 1.1.1.1
       DNS2: 1.0.0.1
       VIRTUAL_HOST: pihole
+      PUID: ${UID}
+      PGID: ${GUID}
     restart: unless-stopped

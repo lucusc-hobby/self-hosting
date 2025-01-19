@@ -28,10 +28,10 @@ include:
   - ./media/radarr/radarr.yaml
   - ./media/hydra2/hydra.yaml
   - ./media/sabnzbd/sabnzbd.yaml
-# - ./media/docker-compose.yaml
+  - ./media/plex/plex.yaml
 
 # AI
-  - ./ollama/ollama.yaml
+#  - ./ollama/ollama.yaml
 
 
 

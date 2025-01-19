@@ -3,10 +3,11 @@ services:
   cloudflared:
     image: cloudflare/cloudflared
     container_name: cloudflared
-    command: tunnel run
+    command: tunnel --no-autoupdate run
     restart: unless-stopped
     environment:
       - TUNNEL_TOKEN=${CF_TUNNEL_TOKEN}
+      - TZ=${TZ}
     networks:
       - cloudflare-transport
 

@@ -9,9 +9,9 @@ services:
     ports:
       - ${JELLYFIN_PORT}:8096
     environment:
-      PUID: ${UID}
-      PGID: ${GUID}
-      TZ: ${TZ}
+      - PUID: ${UID}
+      - PGID: ${GUID}
+      - TZ: ${TZ}
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.jellyfin.rule=Host(`jellyfin.${DOMAIN}`)'

@@ -18,30 +18,30 @@ services:
       - mealie-data:/app/data/
     environment:
       # Set Backend ENV Variables Here
-      # ALLOW_SIGNUP: true
-      PUID: ${UID}
-      PGID: ${GUID}
-      TZ: ${TZ}
-      # MAX_WORKERS: 1
-      # WEB_CONCURRENCY: 1
-      BASE_URL: https://mealie.${DOMAIN}
-      DEFAULT_GROUP: crawfords
+      # - ALLOW_SIGNUP=true
+      - PUID=${UID}
+      - PGID=${GUID}
+      - TZ=${TZ}
+      - BASE_URL=https://mealie.${DOMAIN}
+      - DEFAULT_GROUP=crawfords
+      # - MAX_WORKERS = 1
+      # - WEB_CONCURRENCY = 1
       # Database Settings
-      DB_ENGINE: postgres
-      POSTGRES_USER: mealie
-      POSTGRES_PASSWORD: mealie
-      POSTGRES_SERVER: postgres
-      POSTGRES_PORT: 5432
-      POSTGRES_DB: mealie
+      - DB_ENGINE=postgres
+      - POSTGRES_USER=mealie
+      - POSTGRES_PASSWORD=mealie
+      - POSTGRES_SERVER=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=mealie
     labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.routers.mealie.rule=Host(`mealie.${DOMAIN}`)'
-      - 'traefik.http.routers.mealie.entrypoints=https'
-      - 'traefik.http.routers.mealie.tls.certresolver=dns-cloudflare'
-      - 'traefik.http.routers.mealie.tls.domains[0].main=${DOMAIN}'
-      - 'traefik.http.routers.mealie.tls.domains[0].sans=*.${DOMAIN}'
-      - 'traefik.http.services.mealie.loadbalancer.server.port=9000'
-      - 'traefik.docker.network=traefik_proxy'
+      - traefik.enable=true
+      - traefik.http.routers.mealie.rule=Host(`mealie.${DOMAIN}`)
+      - traefik.http.routers.mealie.entrypoints=https
+      - traefik.http.routers.mealie.tls.certresolver=dns-cloudflare
+      - traefik.http.routers.mealie.tls.domains[0].main=${DOMAIN}
+      - traefik.http.routers.mealie.tls.domains[0].sans=*.${DOMAIN}
+      - traefik.http.services.mealie.loadbalancer.server.port=9000
+      - traefik.docker.network=traefik_proxy
     depends_on:
       postgres:
         condition: service_healthy
@@ -55,8 +55,8 @@ services:
     volumes:
       - mealie-pgdata:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: mealie
-      POSTGRES_USER: mealie
+      - POSTGRES_PASSWORD=mealie
+      - POSTGRES_USER=mealie
     healthcheck:
       test: ["CMD", "pg_isready"]
       interval: 30s
